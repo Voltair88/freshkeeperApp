@@ -1,11 +1,10 @@
 import { Text, View,Button } from 'react-native';
-import styles from '../../styles';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { HomeParamList } from '../types/typesindex';
 
 function DetailsScreen({ navigation }: NativeStackScreenProps<HomeParamList>) {
     return (
-      <View style={styles.container}>
+      <View>
         <Text>Details Screen</Text>
         <Button
           title="Go to Home Screen"
