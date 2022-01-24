@@ -5,7 +5,6 @@ import { HomeParamList } from '../types/typesindex';
 function DetailsScreen({ navigation }: NativeStackScreenProps<HomeParamList>) {
     return (
       <View>
-        <Text>Details Screen</Text>
         <Button
           title="Go to Home Screen"
           onPress={() => navigation.push('Home')}

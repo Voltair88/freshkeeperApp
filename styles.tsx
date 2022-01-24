@@ -1,18 +1,32 @@
-import React, { Component } from 'react';
-import { View } from 'react-native';
-import styled from 'styled-components/native'; // 2.2.4
+import React from 'react';
+import { StyleSheet } from 'react-native';
+import { useFonts, Pacifico_400Regular } from '@expo-google-fonts/pacifico';
 
-export const Head = styled.View`
-  @import url("https://fonts.googleapis.com/css2?family=Pacifico&display=swap");
-  font-family: 'Pacifico';
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 14px 16px 14px 18px;
-  height: 65px;
-  left: 0px;
-  right: 0px;
-  top: 0px;
-  background: #0e4462;
-`;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  header: {
+    flex: 1,
+    backgroundColor: '#0E4462',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  title: {
+    color: '#49BEFF',
+    fontSize: 20,
+    fontFamily: 'Pacifico_400Regular',
+  },
+  body: {
+    flex: 12,
+    backgroundColor: 'blue',
+  },
+  navbar: {
+    flex: 1,
+    backgroundColor: 'green',
+  },
+});
+
+export default styles;
