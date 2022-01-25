@@ -10,6 +10,7 @@ import {
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
+import styles from "../../styles";
 
 const Tab = createBottomTabNavigator();
 
@@ -17,6 +18,7 @@ export default function Footer() {
   return (
     <Tab.Navigator
       screenOptions={() => ({
+        headerShown: false,
         tabBarActiveTintColor: "#FFFFFF",
         tabBarInactiveTintColor: "#49BEFF",
         tabBarStyle: {
@@ -27,13 +29,13 @@ export default function Footer() {
       })}
     >
       <Tab.Screen
-        name="Add-item"
+        name="Additem"
         component={Additem}
         options={{
-          tabBarLabel: "Add-item",
+          tabBarLabel: "Additem",
           tabBarIcon: ({ color }) => (
             <MaterialIcons name="playlist-add" color={color} size={26} />
-          ),
+          ),         
         }}
       />
       <Tab.Screen

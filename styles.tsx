@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 10,
-  },
+    },
   navbar: {
     flex: 1,
   },
