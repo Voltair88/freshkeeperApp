@@ -1,9 +1,9 @@
 export type HomeParamList = {
-    Home: undefined;
+    Additem: undefined;
     Details: undefined;
 };
 
 export type RootStackParamList = {
-    Home: undefined,
+    Additem: undefined,
     Details: undefined; 
   };

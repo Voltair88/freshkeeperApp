@@ -18,12 +18,10 @@ const styles = StyleSheet.create({
     fontFamily: 'Pacifico_400Regular',
   },
   body: {
-    flex: 12,
-    backgroundColor: 'blue',
+    flex: 10,
   },
   navbar: {
     flex: 1,
-    backgroundColor: 'green',
   },
 });
 

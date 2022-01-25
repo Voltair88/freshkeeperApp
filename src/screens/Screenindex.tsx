@@ -1,5 +1,4 @@
-import HomeScreen from "./Homescreen";
-import DetailsScreen from "./DetailsScreen";
+import Storage from "./Additem";
+import Additem from "./Storage";
 
-
-export { HomeScreen, DetailsScreen };
+export { Storage, Additem };

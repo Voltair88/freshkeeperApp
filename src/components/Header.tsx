@@ -4,8 +4,8 @@ import  styles from "../../styles";
 
 export default function Header() {
   return (
-    <View>
-      <Text>Freshkeeper</Text>
+    <View style={styles.header}>
+      <Text style={styles.title}>Freshkeeper</Text>
     </View>
   );
 }
