@@ -9,7 +9,7 @@ import {
 } from "../screens/Screenindex";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
-import { FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesome5 } from "@expo/vector-icons";
 
 const Tab = createBottomTabNavigator();
 
@@ -52,7 +52,8 @@ export default function Footer() {
         options={{
           tabBarLabel: "Shoppinglist",
           tabBarIcon: ({ color }) => (
-<FontAwesome5 name="clipboard-list" size={24} color={color} />          ),
+            <FontAwesome5 name="clipboard-list" size={24} color={color} />
+          ),
         }}
       />
       <Tab.Screen
@@ -61,7 +62,8 @@ export default function Footer() {
         options={{
           tabBarLabel: "Account",
           tabBarIcon: ({ color }) => (
-<MaterialIcons name="account-circle" size={24} color={color} />          ),
+            <MaterialIcons name="account-circle" size={24} color={color} />
+          ),
         }}
       />
     </Tab.Navigator>
