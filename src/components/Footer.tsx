@@ -1,20 +1,22 @@
 import React from "react";
 import { View, Text, Button } from "react-native";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { NavigationContainer } from "@react-navigation/native";
-import { HomeParamList } from "../types/typesindex";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import styles from "../../styles";
-import { Additem, Storage } from "../screens/Screenindex";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import {
+  Additem,
+  Storage,
+  Shoppinglist,
+  Account,
+} from "../screens/Screenindex";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome5 } from '@expo/vector-icons';
+
 const Tab = createBottomTabNavigator();
 
 export default function Footer() {
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
+      screenOptions={() => ({
         tabBarActiveTintColor: "#FFFFFF",
         tabBarInactiveTintColor: "#49BEFF",
         tabBarStyle: {
@@ -25,12 +27,12 @@ export default function Footer() {
       })}
     >
       <Tab.Screen
-        name="Additem"
+        name="Add-item"
         component={Additem}
         options={{
-          tabBarLabel: "Additem",
+          tabBarLabel: "Add-item",
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="home" color={color} size={26} />
+            <MaterialIcons name="playlist-add" color={color} size={26} />
           ),
         }}
       />
@@ -40,8 +42,26 @@ export default function Footer() {
         options={{
           tabBarLabel: "Storage",
           tabBarIcon: ({ color }) => (
-            <MaterialIcons name="playlist-add" size={24} color={color} />
+            <MaterialCommunityIcons name="fridge" size={24} color={color} />
           ),
+        }}
+      />
+      <Tab.Screen
+        name="Shoppinglist"
+        component={Shoppinglist}
+        options={{
+          tabBarLabel: "Shoppinglist",
+          tabBarIcon: ({ color }) => (
+<FontAwesome5 name="clipboard-list" size={24} color={color} />          ),
+        }}
+      />
+      <Tab.Screen
+        name="Account"
+        component={Account}
+        options={{
+          tabBarLabel: "Account",
+          tabBarIcon: ({ color }) => (
+<MaterialIcons name="account-circle" size={24} color={color} />          ),
         }}
       />
     </Tab.Navigator>

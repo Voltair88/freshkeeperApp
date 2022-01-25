@@ -6,7 +6,7 @@ function Storage({ navigation }: NativeStackScreenProps<HomeParamList>) {
     return (
       <View>
         <Button
-          title="Go to Home Screen"
+          title="Go to Additem"
           onPress={() => navigation.push('Additem')}
         />
         <Button title="Go to Home" onPress={() => navigation.navigate('Additem')} />

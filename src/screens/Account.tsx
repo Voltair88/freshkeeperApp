@@ -5,7 +5,7 @@ import  styles from "../../styles";
 export default function Account() {
   return (
       <View>
-
+        <Text>Account</Text>
       </View>
   );
 }

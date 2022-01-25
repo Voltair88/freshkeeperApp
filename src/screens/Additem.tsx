@@ -9,8 +9,8 @@ function Additem({ navigation }: NativeStackScreenProps<HomeParamList>) {
         Additem
       </Text>
       <Button
-        title="Go to Details"
-        onPress={() => navigation.navigate("Details")}
+        title="Go to Storage"
+        onPress={() => navigation.navigate("Storage")}
       />
     </View>
   );
