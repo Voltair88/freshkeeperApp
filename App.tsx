@@ -1,18 +1,14 @@
 import * as React from "react";
-import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { HomeScreen, DetailsScreen } from "./src/screens/Screenindex";
 import { RootStackParamList } from "./src/types/typesindex";
-import Header from "./src/components/Header";
 import styles from "./styles";
-import { Text, StyleSheet, View } from "react-native";
-
-const Stack = createNativeStackNavigator<RootStackParamList>();
-
+import { Text, View } from "react-native";
 import AppLoading from 'expo-app-loading';
 import { useFonts, Pacifico_400Regular } from '@expo-google-fonts/pacifico';
 
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 
 function App() {

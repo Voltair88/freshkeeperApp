@@ -1,6 +1,4 @@
-import React from 'react';
 import { StyleSheet } from 'react-native';
-import { useFonts, Pacifico_400Regular } from '@expo-google-fonts/pacifico';
 
 
 const styles = StyleSheet.create({

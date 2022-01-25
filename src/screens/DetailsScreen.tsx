@@ -1,4 +1,4 @@
-import { Text, View,Button } from 'react-native';
+import { Text, View, Button } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { HomeParamList } from '../types/typesindex';
 
