@@ -6,7 +6,7 @@ import styles from "../../styles";
 function Account({ navigation }: NativeStackScreenProps<RootTabParamList>) {
   return (
     <View>
-      <Text>Account Screen</Text>
+      <Text style={styles.tabtitle}>Account</Text>
     </View>
   );
 }
