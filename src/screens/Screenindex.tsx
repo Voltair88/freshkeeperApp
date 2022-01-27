@@ -1,5 +1,6 @@
-import HomeScreen from "./Homescreen";
-import DetailsScreen from "./DetailsScreen";
+import Additem from "./Additem";
+import Storage from "./Storage";
+import Shoppinglist from "./Shoppinglist";
+import Account from "./Account";
 
-
-export { HomeScreen, DetailsScreen };
+export { Additem, Storage, Shoppinglist, Account };

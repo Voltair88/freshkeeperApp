@@ -1,9 +1,6 @@
-export type HomeParamList = {
-    Home: undefined;
-    Details: undefined;
+export type RootTabParamList = {
+  Additem: undefined;
+  Storage: undefined;
+  Shoppinglist: undefined;
+  Account: undefined;
 };
-
-export type RootStackParamList = {
-    Home: undefined,
-    Details: undefined; 
-  };
