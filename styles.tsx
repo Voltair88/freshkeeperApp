@@ -38,12 +38,19 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
   },
   body: {
+<<<<<<< HEAD
     flex: 12,
     backgroundColor: "blue",
   },
   navbar: {
     flex: 1,
     backgroundColor: "green",
+=======
+    flex: 10,
+    },
+  navbar: {
+    flex: 1,
+>>>>>>> b0a0a6d2916353515f2cd0d03ce26b66b9c6cb06
   },
 });
 
