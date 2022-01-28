@@ -64,7 +64,6 @@ const styles = StyleSheet.create({
   },
   flexrow: {
     flexDirection: "row",
-    /*     alignItems: "center", */
   },
   itemname: {
     fontFamily: "Inter_700Bold",

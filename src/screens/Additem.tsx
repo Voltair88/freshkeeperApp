@@ -83,8 +83,6 @@ function Additem({ navigation }: NativeStackScreenProps<RootTabParamList>) {
             prepend={<View style={{ width: 30 }} />}
             append={<View style={{ width: 30 }} />}
             buttonTextColor="black"
-            /*             colorMax={"#f04048"}
-            colorMin={"#40c5f4"} */
             value={value}
             onChange={(number) => onChange(number)}
           />
@@ -92,6 +90,10 @@ function Additem({ navigation }: NativeStackScreenProps<RootTabParamList>) {
         name="number"
       />
       <Text style={styles.devider} />
+      <View style={styles.flexrow}>
+        <Text style={styles.itemnumber}>3</Text>
+        <Text style={styles.itemname}> Choose storage</Text>
+      </View>
 
       <Button title="Submit" onPress={handleSubmit(onSubmit)} />
     </View>
