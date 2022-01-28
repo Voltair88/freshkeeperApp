@@ -1,10 +1,13 @@
-import { Autorenew } from "@material-ui/icons";
 import { StyleSheet } from "react-native";
+import Constants from "expo-constants";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    justifyContent: "center",
+    paddingTop: Constants.statusBarHeight,
+    padding: 8,
+    backgroundColor: "#0e101c",
   },
   header: {
     flex: 1,
@@ -42,6 +45,12 @@ const styles = StyleSheet.create({
   },
   navbar: {
     flex: 1,
+  },
+  input: {
+    backgroundColor: "white",
+    height: 40,
+    padding: 10,
+    borderRadius: 4,
   },
 });
 
