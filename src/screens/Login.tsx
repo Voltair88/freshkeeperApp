@@ -4,21 +4,35 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
+import { Storage } from "./Screenindex";
+import { useNavigation } from "@react-navigation/native";
+import React, { useState, useEffect } from "react";
 import styles from "../../styles";
 import { TextInput } from "react-native-paper";
 import { auth } from "../../firebase";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootTabParamList } from "../types/typesindex";
 
-const Login = () => {
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+function Login({ navigation }: NativeStackScreenProps<RootTabParamList>) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        navigation.navigate("Storage");
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const handleLogin = () => {
     auth
       .signInWithEmailAndPassword(email, password)
       .then((userCredentials) => {
         const user = userCredentials.user;
-        console.log(user?.email);
+        console.log("logged in with", user?.email);
       })
       .catch((error) => alert(error.message));
   };
@@ -62,6 +76,6 @@ const Login = () => {
       </View>
     </KeyboardAvoidingView>
   );
-};
+}
 
 export default Login;

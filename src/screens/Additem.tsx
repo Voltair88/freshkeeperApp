@@ -2,16 +2,14 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootTabParamList } from "../types/typesindex";
 import styles from "../../styles";
 import * as React from "react";
-import { Text, View, Button, TextInput } from "react-native";
+import { Text, View, Button, TextInput, TouchableOpacity } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useForm, Controller } from "react-hook-form";
 import InputSpinner from "react-native-input-spinner";
 
 function Additem({ navigation }: NativeStackScreenProps<RootTabParamList>) {
-  /*   function setState(arg0: { value: number }): void {
-    throw new Error("Function not implemented.");
-  }
-   */
+  const [name, setName] = React.useState("");
+  const [amount, setAmount] = React.useState("");
   const {
     control,
     handleSubmit,
@@ -19,9 +17,10 @@ function Additem({ navigation }: NativeStackScreenProps<RootTabParamList>) {
   } = useForm({
     defaultValues: {
       name: "",
-      number: 0,
+      amount: 0,
     },
   });
+
   const onSubmit = (data: any) => console.log(data);
   return (
     <View>
@@ -39,11 +38,10 @@ function Additem({ navigation }: NativeStackScreenProps<RootTabParamList>) {
         rules={{
           required: true,
         }}
-        render={({ field: { onChange, onBlur, value } }) => (
+        render={({ field: { onChange, value } }) => (
           <TextInput
             style={styles.nameinput}
-            onBlur={onBlur}
-            onChangeText={onChange}
+            onChangeText={(name) => onChange(name)}
             value={value}
           />
         )}
@@ -85,18 +83,19 @@ function Additem({ navigation }: NativeStackScreenProps<RootTabParamList>) {
             append={<View style={{ width: 30 }} />}
             buttonTextColor="black"
             value={value}
-            onChange={(number) => onChange(number)}
+            onChange={(amount) => onChange(amount)}
           />
         )}
-        name="number"
+        name="amount"
       />
       <Text style={styles.devider} />
       <View style={styles.flexrow}>
         <Text style={styles.itemnumber}>3</Text>
         <Text style={styles.itemname}> Choose storage</Text>
       </View>
-
-      <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+      <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
+        <Text style={styles.buttonText}>Submit</Text>
+      </TouchableOpacity>
     </View>
   );
 }
