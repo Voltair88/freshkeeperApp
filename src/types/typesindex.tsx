@@ -3,4 +3,5 @@ export type RootTabParamList = {
   Storage: undefined;
   Shoppinglist: undefined;
   Account: undefined;
+  Login: undefined;
 };

@@ -7,6 +7,7 @@ function Account({ navigation }: NativeStackScreenProps<RootTabParamList>) {
   return (
     <View>
       <Text style={styles.tabtitle}>Account</Text>
+      <Button title="Login" onPress={() => navigation.navigate("Login")} />
     </View>
   );
 }

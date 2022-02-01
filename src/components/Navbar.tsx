@@ -6,6 +6,7 @@ import {
   Additem,
   Account,
   Shoppinglist,
+  Login,
 } from "../screens/Screenindex";
 import { RootTabParamList } from "../types/typesindex";
 import styles from "../../styles";
@@ -98,6 +99,7 @@ export default function Navbar() {
             ),
         }}
       />
+      <Tab.Screen name="Login" component={Login} />
     </Tab.Navigator>
   );
 }

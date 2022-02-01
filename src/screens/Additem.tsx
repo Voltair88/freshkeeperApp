@@ -78,6 +78,7 @@ function Additem({ navigation }: NativeStackScreenProps<RootTabParamList>) {
               borderWidth: 2,
               borderRadius: 70 / 2,
               height: 70,
+              maxWidth: 70,
             }}
             fontSize={40}
             prepend={<View style={{ width: 30 }} />}

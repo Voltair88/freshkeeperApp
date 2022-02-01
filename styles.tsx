@@ -2,11 +2,7 @@ import { StyleSheet } from "react-native";
 import Constants from "expo-constants";
 import { Dimensions } from "react-native";
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: Constants.statusBarHeight,
-    padding: 8,
-  },
+  // Header
   header: {
     flex: 1,
     backgroundColor: "#0E4462",
@@ -19,6 +15,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: "Pacifico_400Regular",
   },
+
+  // Tabbars
   tabtitle: {
     fontFamily: "Inter_700Bold",
     fontSize: 26,
@@ -34,22 +32,23 @@ const styles = StyleSheet.create({
     fontStyle: "italic",
     textAlign: "center",
   },
+
+  // App
   body: {
     flex: 10,
   },
-  navbar: {
-    flex: 1,
-  },
+
+  // Additem
   nameinput: {
     backgroundColor: "white",
-    height: 40,
+    height: Dimensions.get("window").height * 0.05,
     paddingHorizontal: 10,
     marginHorizontal: 40,
     marginVertical: 10,
     borderRadius: 4,
   },
   numberinput: {
-    height: 70,
+    height: Dimensions.get("window").height * 0.1,
     paddingHorizontal: 90,
     borderRadius: 4,
     marginVertical: 10,
@@ -59,7 +58,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#6363637f",
     marginTop: 10,
-    height: 1,
+    height: Dimensions.get("window").height * 0.01,
     marginHorizontal: 20,
   },
   flexrow: {
@@ -69,21 +68,51 @@ const styles = StyleSheet.create({
     fontFamily: "Inter_700Bold",
     fontSize: 16,
     marginTop: 10,
-    left: Dimensions.get("window").width * 0.25,
-    width: Dimensions.get("window").width * 0.5,
-    right: Dimensions.get("window").width * 0.25,
+    marginLeft: 20,
+    left: Dimensions.get("window").width * 0.3,
   },
   itemnumber: {
     fontFamily: "Inter_700Bold",
     backgroundColor: "#49BEFF",
-    borderRadius: 30 / 2,
+    borderRadius: Dimensions.get("window").height * 0.08,
     color: "white",
-    width: 30,
-    height: 30,
+    width: Dimensions.get("window").width * 0.08,
+    height: Dimensions.get("window").width * 0.08,
     textAlign: "center",
     paddingVertical: 5,
-    left: 10,
+    left: Dimensions.get("window").width * 0.03,
     marginTop: 10,
+    position: "absolute",
+  },
+
+  // Login
+
+  container: {
+    flex: 1,
+    paddingTop: Constants.statusBarHeight,
+    backgroundColor: "#ecf0f1",
+    padding: 8,
+  },
+  button: {
+    backgroundColor: "#49BEFF",
+    padding: 12,
+    margin: 16,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 4,
+    borderColor: "#fff",
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+  },
+  logininput: {
+    backgroundColor: "white",
+    height: Dimensions.get("window").height * 0.05,
+    paddingHorizontal: 10,
+    marginHorizontal: 40,
+    marginVertical: 10,
+    borderRadius: 4,
   },
 });
 
