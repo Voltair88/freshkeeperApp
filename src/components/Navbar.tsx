@@ -1,10 +1,11 @@
 import React from "react";
 import { View, Text, Button } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {
   Storage,
   Additem,
-  Accountnav,
   Shoppinglist,
   Login,
   Signup,
@@ -16,13 +17,36 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<RootTabParamList>();
+const HomeStack = createNativeStackNavigator();
+
+function HomeStackScreen() {
+  return (
+    <HomeStack.Navigator
+      screenOptions={{
+        headerTransparent: true,
+        headerShadowVisible: false,
+        headerTitle: "",
+      }}
+    >
+      <HomeStack.Screen name="Account Screen" component={Account} />
+      <HomeStack.Group screenOptions={{ headerShown: true }}>
+        <HomeStack.Screen name="Login" component={Login} />
+        <HomeStack.Screen name="Signup" component={Signup} />
+      </HomeStack.Group>
+    </HomeStack.Navigator>
+  );
+}
 
 export default function Navbar() {
   return (
     <Tab.Navigator
       screenOptions={() => ({
-        headerShown: false,
+        headerStyle: {
+          height: 0,
+        },
+        headerShadowVisible: false,
+        headerTitle: "",
         tabBarActiveTintColor: "#FFFFFF",
         tabBarInactiveTintColor: "#49BEFF",
         tabBarStyle: {
@@ -82,7 +106,7 @@ export default function Navbar() {
       />
       <Tab.Screen
         name="Account"
-        component={Account}
+        component={HomeStackScreen}
         options={{
           tabBarLabel: "Account",
           tabBarIcon: ({ color, size, focused }) =>
@@ -101,20 +125,6 @@ export default function Navbar() {
             ),
         }}
       />
-
-      {/*       <Tab.Screen
-        name="Login"
-        component={Login}
-        options={{
-          tabBarLabel: "Login",
-          tabBarIcon: ({ color, size, focused }) =>
-            focused ? (
-              <FontAwesome5 name="sign-in-alt" size={size} color={color} />
-            ) : (
-              <FontAwesome5 name="sign-in-alt" size={size} color={color} />
-            ),
-        }}
-      /> */}
     </Tab.Navigator>
   );
 }
