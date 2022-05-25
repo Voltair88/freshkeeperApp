@@ -85,6 +85,10 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
 
+  // Account 
+
+  
+
   // Login
 
   container: {

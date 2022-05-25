@@ -1,3 +1,4 @@
+import react, { useContext, useEffect, useState } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootTabParamList } from "../types/typesindex";
 import styles from "../../styles";
@@ -6,6 +7,8 @@ import { Text, View, Button, TextInput, TouchableOpacity } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useForm, Controller } from "react-hook-form";
 import InputSpinner from "react-native-input-spinner";
+import { auth } from "../../firebase";
+import { getDatabase, ref, onValue, set } from "firebase/database";
 
 function Additem({ navigation }: NativeStackScreenProps<RootTabParamList>) {
   const [name, setName] = React.useState("");
@@ -20,6 +23,25 @@ function Additem({ navigation }: NativeStackScreenProps<RootTabParamList>) {
       amount: 0,
     },
   });
+
+  useEffect(() => {
+    const getStorages = async () => {
+      const snapshot = await firebase
+        .firestore()
+        .ref("/storages")
+        .once("value");
+      const storages = snapshot.val();
+      console.log(storages);
+    };
+    getStorages();
+  }, []);
+/*     const db = getDatabase();
+    const storageRef = ref(db, "/storages");
+    onValue(storageRef, (snapshot) => {
+      const storage = snapshot.val();
+      console.log("storage", storage);
+    }); */
+  }, []);
 
   const onSubmit = (data: any) => console.log(data);
   return (
@@ -93,6 +115,7 @@ function Additem({ navigation }: NativeStackScreenProps<RootTabParamList>) {
         <Text style={styles.itemnumber}>3</Text>
         <Text style={styles.itemname}> Choose storage</Text>
       </View>
+      <Text style={styles.devider} />
       <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
         <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>

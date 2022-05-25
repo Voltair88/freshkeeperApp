@@ -5,7 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9f6ce428-cea0-458e-8ff2-f6fecb3e4d0c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/screens/Screenindex.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/Screenindex.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/Additem.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/Additem.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/Login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/Login.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/styles.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/styles.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,6 +26,8 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
+    <property name="cidr.known.project.marker" value="true" />
     <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />

@@ -4,8 +4,6 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
 } from "react-native";
-import { Storage } from "./Screenindex";
-import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
 import styles from "../../styles";
 import { TextInput } from "react-native-paper";
