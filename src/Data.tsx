@@ -1,4 +1,4 @@
-import { getDatabase, ref, onValue, set } from "firebase/database";
+import { getDatabase, ref, onValue } from "firebase/database";
 
 export default function getStorages() {
   const db = getDatabase();

@@ -1,14 +1,12 @@
-import react, { useContext, useEffect, useState } from "react";
+import { useEffect } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootTabParamList } from "../types/typesindex";
 import styles from "../../styles";
 import * as React from "react";
-import { Text, View, Button, TextInput, TouchableOpacity } from "react-native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { Text, View, TextInput, TouchableOpacity } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import InputSpinner from "react-native-input-spinner";
-import { auth } from "../../firebase";
-import { getDatabase, ref, onValue, set } from "firebase/database";
+import firebase from "../../firebase";
 
 function Additem({ navigation }: NativeStackScreenProps<RootTabParamList>) {
   const [name, setName] = React.useState("");
@@ -25,22 +23,12 @@ function Additem({ navigation }: NativeStackScreenProps<RootTabParamList>) {
   });
 
   useEffect(() => {
-    const getStorages = async () => {
-      const snapshot = await firebase
-        .firestore()
-        .ref("/storages")
-        .once("value");
+    const getDatabase = async () => {
+      const snapshot = await firebase.database().ref("/").once("value");
       const storages = snapshot.val();
       console.log(storages);
     };
-    getStorages();
-  }, []);
-/*     const db = getDatabase();
-    const storageRef = ref(db, "/storages");
-    onValue(storageRef, (snapshot) => {
-      const storage = snapshot.val();
-      console.log("storage", storage);
-    }); */
+    getDatabase();
   }, []);
 
   const onSubmit = (data: any) => console.log(data);

@@ -1,7 +1,5 @@
 import React from "react";
-import { View, Text, Button } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {
   Storage,
@@ -12,7 +10,6 @@ import {
   Account,
 } from "../screens/Screenindex";
 import { RootTabParamList } from "../types/typesindex";
-import styles from "../../styles";
 import { MaterialIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";

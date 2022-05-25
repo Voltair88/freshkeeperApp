@@ -2,7 +2,6 @@ import { Text, View, Button } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootTabParamList } from "../types/typesindex";
 import styles from "../../styles";
-import { auth } from "../../firebase";
 import { FontAwesome5 } from "@expo/vector-icons";
 
 function Account({ navigation }: NativeStackScreenProps<RootTabParamList>) {
