@@ -40,8 +40,16 @@ const styles = StyleSheet.create({
   },
 
   // Additem
+  error: {
+    color: 'red',
+    fontSize: 12,
+    fontFamily: 'inter-regular',
+    textAlign: 'center',
+  },
   nameinput: {
-    backgroundColor: 'grey',
+    backgroundColor: '#11a9ff1e',
+    borderColor: '#49beff',
+    borderWidth: 1,
     height: Dimensions.get('window').height * 0.05,
     paddingHorizontal: 10,
     marginHorizontal: 40,
@@ -50,9 +58,8 @@ const styles = StyleSheet.create({
   },
   numberinput: {
     height: Dimensions.get('window').height * 0.1,
-    paddingHorizontal: 90,
     borderRadius: 4,
-    marginVertical: 10,
+    marginVertical: 3,
     borderColor: '#49BEFF',
   },
   devider: {
@@ -63,13 +70,13 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   flexrow: {
+    height: Dimensions.get('window').height * 0.07,
     flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
   },
   itemname: {
     fontSize: 16,
-    marginTop: 10,
-    marginLeft: 20,
-    left: Dimensions.get('window').width * 0.3,
   },
   itemnumber: {
     backgroundColor: '#49BEFF',
@@ -83,18 +90,61 @@ const styles = StyleSheet.create({
     marginTop: 10,
     position: 'absolute',
   },
+  picker: {
+    height: Dimensions.get('window').height * 0.08,
+    width: Dimensions.get('window').width * 0.16,
+    borderRadius: Dimensions.get('window').height * 0.08,
+    borderColor: '#49BEFF',
+    borderWidth: 2,
+    backgroundColor: '#11a9ff1e',
+    textAlign: 'center',
+    justifyContent: 'center',
+  },
+  amounttype: {
+    fontSize: 12,
+    height: 50,
+  },
+  amountTypeLabel: {
+    position: 'absolute',
+    fontSize: 26,
+    textAlign: 'center',
+    marginTop: 5,
+    marginLeft: 5,
+  },
   dateinput: {
     height: Dimensions.get('window').height * 0.05,
     width: Dimensions.get('window').width * 0.5,
     margintop: 10,
     left: Dimensions.get('window').width * 0.25,
     borderRadius: 4,
-    backgroundColor: 'grey',
+    backgroundColor: '#11a9ff1e',
+    borderColor: '#49beff',
+    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   datetext: {
-    color: 'white',
-    textAlign: 'center',
-    paddingVertical: 10,
+    color: 'black',
+  },
+  summary: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    height: 45,
+    marginTop: 10,
+    marginHorizontal: 20,
+  },
+  summarytext: {
+    flexDirection: 'column',
+    fontSize: 14,
+    fontFamily: 'inter-regular',
+    fontWeight: '700',
+  },
+  summarysubtext: {
+    fontSize: 18,
+    fontFamily: 'inter-regular',
+    fontWeight: '700',
+    color: 'rgb(73, 190, 255)',
   },
 
   // Account
