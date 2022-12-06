@@ -1,6 +1,6 @@
-import React from 'react';
 import { Text, View } from '../components/Themed';
-import { RootTabScreenProps } from '../types';
-export function TabThreeScreen({ navigation }: RootTabScreenProps<'TabThree'>) {
-  return <View></View>;
+import styles from '../styles';
+
+export function TabThreeScreen() {
+  return <View style={styles.container}></View>;
 }
