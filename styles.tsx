@@ -2,30 +2,7 @@ import { StyleSheet } from 'react-native';
 import Constants from 'expo-constants';
 import { Dimensions } from 'react-native';
 const styles = StyleSheet.create({
-  // Header
-  header: {
-    flex: 1,
-    backgroundColor: '#0E4462',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: 30,
-  },
-  headertitle: {
-    color: '#49BEFF',
-    fontSize: 20,
-    fontFamily: 'pacifico-regular',
-  },
-
   // Tabbars
-  tabtitle: {
-    fontFamily: 'inter-regular',
-    fontWeight: '700',
-    fontSize: 26,
-    textAlign: 'center',
-    marginLeft: 20,
-    marginRight: 20,
-    paddingVertical: 5,
-  },
   tabsubtitle: {
     borderBottomColor: '#6363637f',
     fontFamily: 'inter-light',
@@ -33,12 +10,6 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     textAlign: 'center',
   },
-
-  // App
-  body: {
-    flex: 10,
-  },
-
   // Additem
   error: {
     color: 'red',
@@ -72,7 +43,7 @@ const styles = StyleSheet.create({
   flexrow: {
     height: Dimensions.get('window').height * 0.07,
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     alignItems: 'center',
   },
   itemname: {
@@ -84,11 +55,12 @@ const styles = StyleSheet.create({
     color: 'white',
     width: Dimensions.get('window').width * 0.08,
     height: Dimensions.get('window').width * 0.08,
-    textAlign: 'center',
-    paddingVertical: 5,
     left: Dimensions.get('window').width * 0.03,
-    marginTop: 10,
     position: 'absolute',
+    lineHeight: Dimensions.get('window').width * 0.08,
+    textAlign: 'center',
+    fontSize: Dimensions.get('window').width * 0.04,
+    fontWeight: 'bold',
   },
   picker: {
     height: Dimensions.get('window').height * 0.08,
@@ -99,17 +71,25 @@ const styles = StyleSheet.create({
     backgroundColor: '#11a9ff1e',
     textAlign: 'center',
     justifyContent: 'center',
+    left: Dimensions.get('window').width * 0.04,
+    right: Dimensions.get('window').width * 0.04,
   },
   amounttype: {
-    fontSize: 12,
+    fontSize: Dimensions.get('window').width * 0.08,
     height: 50,
+    color: '#11a9ff1e',
   },
   amountTypeLabel: {
+    fontSize: Dimensions.get('window').width * 0.08,
+  },
+  amountTypeLabelContainer: {
+    height: Dimensions.get('window').height * 0.08,
+    width: Dimensions.get('window').width * 0.16,
+    borderRadius: Dimensions.get('window').height * 0.08,
+    backgroundColor: '#b6e4fe1e',
     position: 'absolute',
-    fontSize: 26,
-    textAlign: 'center',
-    marginTop: 5,
-    marginLeft: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   dateinput: {
     height: Dimensions.get('window').height * 0.05,
@@ -125,6 +105,8 @@ const styles = StyleSheet.create({
   },
   datetext: {
     color: 'black',
+    fontSize: Dimensions.get('window').width * 0.04,
+    fontWeight: 'bold',
   },
   summary: {
     flexDirection: 'row',
@@ -168,7 +150,8 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: Dimensions.get('window').width * 0.05,
+    fontWeight: 'bold',
   },
   logininput: {
     backgroundColor: 'white',

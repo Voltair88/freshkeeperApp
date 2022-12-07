@@ -8,7 +8,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme, DarkTheme, useIsFocused } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { ColorSchemeName, Pressable } from 'react-native';
+import { ColorSchemeName, Pressable, View, Text, Dimensions } from 'react-native';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import { TabThreeScreen, ModalScreen, NotFoundScreen, TabOneScreen, TabTwoScreen } from '../screens/screensIndex';
@@ -32,7 +32,27 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function RootNavigator() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
+      <Stack.Screen
+        name="Freshkeeper"
+        component={BottomTabNavigator}
+        options={{
+          header(props) {
+            return (
+              <View
+                style={{
+                  backgroundColor: '#0e4462',
+                  height: 70,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  paddingTop: 20,
+                }}
+              >
+                <Text style={{ fontFamily: 'pacifico-regular', fontSize: 20, color: 'white' }}>Freshkeeper</Text>
+              </View>
+            );
+          },
+        }}
+      />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
@@ -55,6 +75,9 @@ function BottomTabNavigator() {
       initialRouteName="TabOne"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
+        tabBarStyle: {
+          backgroundColor: '#0e4462',
+        },
       }}
     >
       <BottomTab.Screen
@@ -62,11 +85,19 @@ function BottomTabNavigator() {
         component={TabOneScreen}
         options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
           title: 'Add item',
+          headerTitleAlign: 'center',
+          headerTransparent: true,
+          headerTitleStyle: {
+            opacity: 0,
+          },
+          headerStyle: {
+            height: Dimensions.get('window').height * 0.05,
+          },
           tabBarIcon: ({ color }) =>
             useIsFocused() ? (
               <TabBarIcon2 name="cart" color={color} />
             ) : (
-              <TabBarIcon2 name="cart-outline" color={color} />
+              <TabBarIcon2 name="cart-outline" color={'white'} />
             ),
           headerRight: () => (
             <Pressable
@@ -75,7 +106,7 @@ function BottomTabNavigator() {
                 opacity: pressed ? 0.5 : 1,
               })}
             >
-              <FontAwesome5 name="user-circle" size={25} color={Colors[colorScheme].text} style={{ marginRight: 15 }} />
+              <FontAwesome5 name="user-circle" size={25} color={'black'} style={{ marginRight: 15 }} />
             </Pressable>
           ),
         })}
@@ -85,11 +116,13 @@ function BottomTabNavigator() {
         component={TabTwoScreen}
         options={({ navigation }: RootTabScreenProps<'TabTwo'>) => ({
           title: 'Storage',
+          headerTitleAlign: 'center',
+
           tabBarIcon: ({ color }) =>
             useIsFocused() ? (
               <TabBarIcon2 name="fridge" color={color} />
             ) : (
-              <TabBarIcon2 name="fridge-outline" color={color} />
+              <TabBarIcon2 name="fridge-outline" color={'white'} />
             ),
           headerRight: () => (
             <Pressable
@@ -108,11 +141,12 @@ function BottomTabNavigator() {
         component={TabThreeScreen}
         options={({ navigation }: RootTabScreenProps<'TabThree'>) => ({
           title: 'Recipes',
+          headerTitleAlign: 'center',
           tabBarIcon: ({ color }) =>
             useIsFocused() ? (
               <TabBarIcon2 name="food" color={color} />
             ) : (
-              <TabBarIcon2 name="food-outline" color={color} />
+              <TabBarIcon2 name="food-outline" color={'white'} />
             ),
           headerRight: () => (
             <Pressable

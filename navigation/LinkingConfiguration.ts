@@ -13,7 +13,7 @@ const linking: LinkingOptions<RootStackParamList> = {
   prefixes: [Linking.createURL('/')],
   config: {
     screens: {
-      Root: {
+      Freshkeeper: {
         screens: {
           TabOne: {
             screens: {

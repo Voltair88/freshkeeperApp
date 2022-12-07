@@ -1,10 +1,10 @@
 import styles from '../styles';
-import { Text, View } from '../components/Themed';
+import { Text, View } from 'react-native';
 import { RootTabScreenProps } from '../types';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 //import firebase from '../firebase';
-import { Platform, ScrollView, TextInput, TouchableOpacity } from 'react-native';
+import { Dimensions, Platform, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 import InputSpinner from 'react-native-input-spinner';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
@@ -35,6 +35,15 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
     formState: { errors },
   } = useForm<Inputs>();
 
+  const pickerRef = useRef(null);
+
+  function open(pickerRef: any) {
+    pickerRef.current.focus();
+  }
+
+  function close(pickerRef: any) {
+    pickerRef.current.blur();
+  }
   /* React.useEffect(() => {
     const getDatabase = async () => {
       const snapshot = await firebase.database().ref('/').once('value');
@@ -64,7 +73,6 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   return (
     <ScrollView>
       <View>
-        <Text style={styles.tabtitle}>Add item</Text>
         <Text style={styles.tabsubtitle}>choose your product, storage and expiration date.</Text>
         <Text style={styles.devider} />
         <View style={styles.flexrow}>
@@ -79,6 +87,7 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
           }}
           render={({ field: { onChange, value } }) => (
             <TextInput
+              placeholder="Enter product name"
               style={styles.nameinput}
               onChangeText={(value) => {
                 onChange(value);
@@ -142,9 +151,10 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
               }}
               render={({ field: { onChange, value } }) => (
                 <Picker
+                  ref={pickerRef}
                   selectedValue={amountType}
                   style={styles.amounttype}
-                  dropdownIconColor="black"
+                  dropdownIconColor="white"
                   onValueChange={(value, itemIndex) => {
                     onChange(value);
                     setAmountType(value);
@@ -159,12 +169,13 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
               )}
               name="amountType"
             />
-            <Text style={styles.amountTypeLabel}>{amountType}</Text>
+            <View style={styles.amountTypeLabelContainer} pointerEvents="none">
+              <Text style={styles.amountTypeLabel}>{amountType}</Text>
+            </View>
           </View>
         </View>
         {errors.amount && <Text style={styles.error}>Enter a amount</Text>}
         {errors.amountType && <Text style={styles.error}>Enter a amount type</Text>}
-
         <Text style={styles.devider} />
         <View style={styles.flexrow}>
           <Text style={styles.itemnumber}>4</Text>
@@ -235,7 +246,7 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
         </View>
         <View style={styles.devider} />
         <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
-          <Text style={styles.buttonText}>Submit</Text>
+          <Text style={styles.buttonText}>Confirm</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
