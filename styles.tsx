@@ -18,6 +18,24 @@ const styles = StyleSheet.create({
     fontFamily: 'inter-regular',
     textAlign: 'center',
   },
+  storage: {
+    height: Dimensions.get('window').height * 0.06,
+    width: Dimensions.get('window').width * 0.8,
+    borderColor: '#49BEFF',
+    borderWidth: 2,
+    backgroundColor: '#11a9ff1e',
+    textAlign: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 40,
+  },
+  storageinput: {
+    height: Dimensions.get('window').height * 0.06,
+    width: Dimensions.get('window').width * 0.8,
+    position: 'absolute',
+    textAlign: 'center',
+    justifyContent: 'center',
+  },
+
   nameinput: {
     backgroundColor: '#11a9ff1e',
     borderColor: '#49beff',
@@ -75,13 +93,15 @@ const styles = StyleSheet.create({
     left: Dimensions.get('window').width * 0.04,
     right: Dimensions.get('window').width * 0.04,
   },
+
   amounttype: {
     fontSize: Dimensions.get('window').width * 0.08,
     height: 50,
-    color: '#11a9ff1e',
   },
   amountTypeLabel: {
+    fontFamily: 'inter-regular',
     fontSize: Dimensions.get('window').width * 0.08,
+    textAlign: 'center',
   },
   amountTypeLabelContainer: {
     height: Dimensions.get('window').height * 0.08,

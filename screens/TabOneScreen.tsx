@@ -10,7 +10,6 @@ import { Picker } from '@react-native-picker/picker';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import moment from 'moment';
-import { TabBarIcon2, TabBarIcon4 } from '../navigation/index';
 type Inputs = {
   name: string;
   amount: number;
@@ -39,20 +38,16 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   } = useForm<Inputs>();
 
   const pickerRef = useRef(null);
+  const pickerRef2 = useRef(null);
 
   function open(pickerRef: any) {
     pickerRef.current.focus();
   }
-
-  function close(pickerRef: any) {
-    pickerRef.current.blur();
-  }
-
   useEffect(() => {
     register('name', { required: true });
     register('amount', { required: true });
     register('amountType', { required: true });
-    register('storage', { required: false });
+    register('storage', { required: true });
     register('expiration', { required: true });
   }, [register]);
 
@@ -194,7 +189,6 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
                     ref={pickerRef}
                     selectedValue={amountType}
                     style={{ display: 'none', opacity: 0, height: 0, width: 0 }}
-                    dropdownIconColor={styles.amounttype.color}
                     onValueChange={(value, itemIndex) => {
                       onChange(value);
                       setAmountType(value);
@@ -222,7 +216,7 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
           <Text style={styles.itemnumber}>4</Text>
           <Text style={styles.itemname}> Choose storage</Text>
         </View>
-        <View style={styles.flexrow}>
+        <View style={styles.storage}>
           <Controller
             control={control}
             rules={{
@@ -230,60 +224,26 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
             }}
             render={({ field: { onChange, value } }) => (
               <TouchableOpacity
+                style={styles.storageinput}
                 onPress={() => {
-                  setStorage('fridge');
-                }}
-                value={value}
-                style={{
-                  ...styles.amountTypeLabelContainer,
-                  height: 48,
-                  justifyContent: 'center',
-                  alignItems: 'flex-start',
-                  left: 0,
+                  open(pickerRef2);
                 }}
               >
-                <TabBarIcon2 name="fridge" color="black" />
-              </TouchableOpacity>
-            )}
-            name="storage"
-          />
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-            }}
-            render={({ field: { onChange, value } }) => (
-              <TouchableOpacity
-                onPress={() => {
-                  setStorage('freezer');
-                }}
-                style={{
-                  ...styles.amountTypeLabelContainer,
-                  height: 48,
-                }}
-              >
-                <TabBarIcon2 name="thermometer-low" color="black" />
-              </TouchableOpacity>
-            )}
-            name="storage"
-          />
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-            }}
-            render={({ field: { onChange, value } }) => (
-              <TouchableOpacity
-                onPress={() => {
-                  setStorage('pantry');
-                }}
-                style={{
-                  ...styles.amountTypeLabelContainer,
-                  height: 48,
-                  right: 0,
-                }}
-              >
-                <TabBarIcon4 name="house" color="black" />
+                <Text style={styles.amountTypeLabel}>{storage}</Text>
+                <Picker
+                  ref={pickerRef2}
+                  selectedValue={storage}
+                  style={{ display: 'none', opacity: 0, height: 0, width: 0 }}
+                  onValueChange={(value, itemIndex) => {
+                    onChange(value);
+                    setStorage(value);
+                  }}
+                >
+                  <Picker.Item label="Fridge" value="Fridge" />
+                  <Picker.Item label="Freezer" value="Freezer" />
+                  <Picker.Item label="Pantry" value="Pantry" />
+                  <Picker.Item label="Other" value="Other" />
+                </Picker>
               </TouchableOpacity>
             )}
             name="storage"
