@@ -86,10 +86,6 @@ function BottomTabNavigator() {
         options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
           title: 'Add item',
           headerTitleAlign: 'center',
-          headerTransparent: true,
-          headerTitleStyle: {
-            opacity: 0,
-          },
           headerStyle: {
             height: Dimensions.get('window').height * 0.05,
           },
@@ -106,7 +102,7 @@ function BottomTabNavigator() {
                 opacity: pressed ? 0.5 : 1,
               })}
             >
-              <FontAwesome5 name="user-circle" size={25} color={'black'} style={{ marginRight: 15 }} />
+              <FontAwesome5 name="user-circle" size={25} color={Colors[colorScheme].text} style={{ marginRight: 15 }} />
             </Pressable>
           ),
         })}

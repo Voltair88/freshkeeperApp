@@ -1,10 +1,10 @@
 import styles from '../styles';
-import { Text, View } from 'react-native';
+import { Text, View, TextInput, useThemeColor } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { useRef, useState } from 'react';
 //import firebase from '../firebase';
-import { Dimensions, Platform, ScrollView, TextInput, TouchableOpacity } from 'react-native';
+import { Platform, ScrollView, TouchableOpacity } from 'react-native';
 import InputSpinner from 'react-native-input-spinner';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
@@ -150,22 +150,33 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
                 required: true,
               }}
               render={({ field: { onChange, value } }) => (
-                <Picker
-                  ref={pickerRef}
-                  selectedValue={amountType}
-                  style={styles.amounttype}
-                  dropdownIconColor="white"
-                  onValueChange={(value, itemIndex) => {
-                    onChange(value);
-                    setAmountType(value);
+                <TouchableOpacity
+                  style={{
+                    height: 48,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                  onPress={() => {
+                    open(pickerRef);
                   }}
                 >
-                  <Picker.Item label="L" value="L" />
-                  <Picker.Item label="ml" value="ml" />
-                  <Picker.Item label="Kg" value="Kg" />
-                  <Picker.Item label="g" value="g" />
-                  <Picker.Item label="pcs" value="pcs" />
-                </Picker>
+                  <Picker
+                    ref={pickerRef}
+                    selectedValue={amountType}
+                    style={{ display: 'none', opacity: 0, height: 0, width: 0 }}
+                    dropdownIconColor={styles.amounttype.color}
+                    onValueChange={(value, itemIndex) => {
+                      onChange(value);
+                      setAmountType(value);
+                    }}
+                  >
+                    <Picker.Item label="L" value="L" />
+                    <Picker.Item label="ml" value="ml" />
+                    <Picker.Item label="Kg" value="Kg" />
+                    <Picker.Item label="g" value="g" />
+                    <Picker.Item label="pcs" value="pcs" />
+                  </Picker>
+                </TouchableOpacity>
               )}
               name="amountType"
             />

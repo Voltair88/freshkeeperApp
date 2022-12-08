@@ -1,6 +1,7 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import Constants from 'expo-constants';
-import { Dimensions } from 'react-native';
+import Colors from './constants/Colors';
+
 const styles = StyleSheet.create({
   // Tabbars
   tabsubtitle: {
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
   },
   devider: {
     borderBottomWidth: 1,
-    borderBottomColor: '#6363637f',
+    borderBottomColor: Colors.light.tint,
     marginTop: 10,
     height: Dimensions.get('window').height * 0.01,
     marginHorizontal: 20,
@@ -104,7 +105,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   datetext: {
-    color: 'black',
     fontSize: Dimensions.get('window').width * 0.04,
     fontWeight: 'bold',
   },
