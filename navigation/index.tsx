@@ -3,7 +3,7 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { FontAwesome, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome, FontAwesome5, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme, DarkTheme, useIsFocused } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -163,14 +163,21 @@ function BottomTabNavigator() {
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
  */
-function TabBarIcon(props: { name: React.ComponentProps<typeof FontAwesome>['name']; color: string }) {
+export function TabBarIcon(props: { name: React.ComponentProps<typeof FontAwesome>['name']; color: string }) {
   return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
 }
 
-function TabBarIcon2(props: { name: React.ComponentProps<typeof MaterialCommunityIcons>['name']; color: string }) {
+export function TabBarIcon2(props: {
+  name: React.ComponentProps<typeof MaterialCommunityIcons>['name'];
+  color: string;
+}) {
   return <MaterialCommunityIcons size={30} style={{ marginBottom: -3 }} {...props} />;
 }
 
-function TabBarIcon3(props: { name: React.ComponentProps<typeof FontAwesome5>['name']; color: string }) {
+export function TabBarIcon3(props: { name: React.ComponentProps<typeof FontAwesome5>['name']; color: string }) {
   return <FontAwesome5 size={30} style={{ marginBottom: -3 }} {...props} />;
+}
+
+export function TabBarIcon4(props: { name: React.ComponentProps<typeof MaterialIcons>['name']; color: string }) {
+  return <MaterialIcons size={30} style={{ marginBottom: -3 }} {...props} />;
 }

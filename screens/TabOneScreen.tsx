@@ -1,14 +1,16 @@
 import styles from '../styles';
-import { Text, View, TextInput, useThemeColor } from '../components/Themed';
+import { Text, View, TextInput } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
-import { useRef, useState } from 'react';
-//import firebase from '../firebase';
+import { useRef, useState, useEffect } from 'react';
 import { Platform, ScrollView, TouchableOpacity } from 'react-native';
 import InputSpinner from 'react-native-input-spinner';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 import moment from 'moment';
+import { TabBarIcon2, TabBarIcon4 } from '../navigation/index';
 type Inputs = {
   name: string;
   amount: number;
@@ -29,10 +31,11 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   const [expiration, setExpiration] = useState('');
   const [show, setShow] = useState(false);
   const {
+    reset,
     register,
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitSuccessful },
   } = useForm<Inputs>();
 
   const pickerRef = useRef(null);
@@ -44,16 +47,44 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   function close(pickerRef: any) {
     pickerRef.current.blur();
   }
-  /* React.useEffect(() => {
-    const getDatabase = async () => {
-      const snapshot = await firebase.database().ref('/').once('value');
-      const storages = snapshot.val();
-      console.log(storages);
-    };
-    getDatabase();
-  }, []);
-*/
-  const onSubmit = (data: Inputs) => {
+
+  useEffect(() => {
+    register('name', { required: true });
+    register('amount', { required: true });
+    register('amountType', { required: true });
+    register('storage', { required: false });
+    register('expiration', { required: true });
+  }, [register]);
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      const getDatabase = async () => {
+        const docRef = collection(db, 'items');
+        const docSnap = await addDoc(docRef, { name, amount, amountType, storage, expiration });
+        console.log('Document written with ID: ', docSnap.id);
+      };
+      getDatabase();
+    }
+  }, [isSubmitSuccessful, name, amount, amountType, storage, expiration]);
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset({
+        name: '',
+        amount: 0,
+        amountType: '',
+        storage: '',
+        expiration: '',
+      });
+      setName('');
+      setAmount(0);
+      setAmountType('');
+      setStorage('');
+      setExpiration('');
+    }
+  }, [isSubmitSuccessful, reset]);
+
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
     console.log(data);
   };
 
@@ -68,7 +99,6 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     return diffDays;
   };
-  console.log(expiration);
 
   return (
     <ScrollView>
@@ -192,6 +222,74 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
           <Text style={styles.itemnumber}>4</Text>
           <Text style={styles.itemname}> Choose storage</Text>
         </View>
+        <View style={styles.flexrow}>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field: { onChange, value } }) => (
+              <TouchableOpacity
+                onPress={() => {
+                  setStorage('fridge');
+                }}
+                value={value}
+                style={{
+                  ...styles.amountTypeLabelContainer,
+                  height: 48,
+                  justifyContent: 'center',
+                  alignItems: 'flex-start',
+                  left: 0,
+                }}
+              >
+                <TabBarIcon2 name="fridge" color="black" />
+              </TouchableOpacity>
+            )}
+            name="storage"
+          />
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field: { onChange, value } }) => (
+              <TouchableOpacity
+                onPress={() => {
+                  setStorage('freezer');
+                }}
+                style={{
+                  ...styles.amountTypeLabelContainer,
+                  height: 48,
+                }}
+              >
+                <TabBarIcon2 name="thermometer-low" color="black" />
+              </TouchableOpacity>
+            )}
+            name="storage"
+          />
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field: { onChange, value } }) => (
+              <TouchableOpacity
+                onPress={() => {
+                  setStorage('pantry');
+                }}
+                style={{
+                  ...styles.amountTypeLabelContainer,
+                  height: 48,
+                  right: 0,
+                }}
+              >
+                <TabBarIcon4 name="house" color="black" />
+              </TouchableOpacity>
+            )}
+            name="storage"
+          />
+        </View>
+        {errors.storage && <Text style={styles.error}>Enter a storage</Text>}
         <Text style={styles.devider} />
         <View style={styles.flexrow}>
           <Text style={styles.itemnumber}>3</Text>
@@ -215,7 +313,7 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
             render={({ field: { onChange, value } }) => (
               <RNDateTimePicker
                 testID="dateTimePicker"
-                value={new Date()}
+                value={value ? new Date(value) : new Date()}
                 mode={'date'}
                 minimumDate={new Date()}
                 is24Hour={true}
@@ -231,24 +329,24 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
             name="expiration"
           />
         )}
-        {errors.expiration && <Text style={styles.error}>Enter a expiration date</Text>}
+        {DaysLeft(expiration) < 0 && <Text style={styles.error}>Enter a expiration date</Text>}
         <Text style={styles.devider} />
         <View>
           <View style={styles.summary}>
             <View>
-              <Text style={styles.summarytext}> Product</Text>
+              <Text style={styles.summarytext}>Product</Text>
               <Text style={styles.summarysubtext}>{name}</Text>
             </View>
             <View>
-              <Text style={styles.summarytext}> Quantity</Text>
+              <Text style={styles.summarytext}>Quantity</Text>
               <Text style={styles.summarysubtext}>{amount + ' ' + amountType}</Text>
             </View>
             <View>
-              <Text style={styles.summarytext}> Storage</Text>
+              <Text style={styles.summarytext}>Storage</Text>
               <Text style={styles.summarysubtext}>{storage}</Text>
             </View>
             <View>
-              <Text style={styles.summarytext}> Expiration date</Text>
+              <Text style={styles.summarytext}>Expiration date</Text>
               <Text style={styles.summarysubtext}>
                 {expiration ? DaysLeft(expiration) + ' days left' : 'Choose date'}
               </Text>

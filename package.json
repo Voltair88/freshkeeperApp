@@ -9,18 +9,21 @@
     "web": "NODE_OPTIONS=--openssl-legacy-provider expo start --web",
     "test": "jest --watchAll"
   },
+  "android": {
+    "package": "com.freshkeeperapp.app"
+  },
   "jest": {
     "preset": "jest-expo"
   },
   "dependencies": {
     "@expo/vector-icons": "^13.0.0",
     "@react-native-community/datetimepicker": "6.5.2",
-    "@react-native-firebase/app": "^16.4.6",
     "@react-native-picker/picker": "2.4.8",
     "@react-navigation/bottom-tabs": "^6.0.5",
     "@react-navigation/native": "^6.0.2",
     "@react-navigation/native-stack": "^6.1.0",
     "expo": "~47.0.8",
+    "expo-application": "~5.0.1",
     "expo-asset": "~8.6.2",
     "expo-constants": "~14.0.2",
     "expo-font": "~11.0.1",

@@ -1,15 +1,21 @@
-import firebase from '@react-native-firebase/app';
+// Import the functions you need from the SDKs you need
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
-/**
- * TODO: Replace the following with your app's Firebase project configuration
- *
- */
-const app = firebase.initializeApp({
-  apiKey: 'AIzaSyB66IJHm932OMjmR6izpUWtI-ysmujkR2k',
-  authDomain: 'freshkeeper-development.firebaseapp.com',
-  projectId: 'freshkeeper-development',
-  storageBucket: 'freshkeeper-development.appspot.com',
-  messagingSenderId: '932358224129',
-  appId: '1:932358224129:web:40b88cb948a1def436c300',
-  measurementId: 'G-1VW0YHGM3G',
-});
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: 'AIzaSyDPHEbpTJhZwkEU8TbaNFUF1d_ZvWOcPGk',
+  authDomain: 'freshkeeperapp-f28b3.firebaseapp.com',
+  projectId: 'freshkeeperapp-f28b3',
+  storageBucket: 'freshkeeperapp-f28b3.appspot.com',
+  messagingSenderId: '266721437546',
+  appId: '1:266721437546:web:a2edefff9db55b1f87a713',
+};
+
+// Initialize Firebase
+export const app = initializeApp(firebaseConfig);
+export const auth = getAuth();
+export const db = getFirestore();

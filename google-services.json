@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "266721437546",
+    "project_id": "freshkeeperapp-f28b3",
+    "storage_bucket": "freshkeeperapp-f28b3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:266721437546:android:ba4d4bb4300be58787a713",
+        "android_client_info": {
+          "package_name": "com.freshkeeperapp.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "266721437546-0grir5k7mru2vr6rqp3phin80hgs19da.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMSihxzhkLoJfs-bwLxUnnP9_XO_Ccaqs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "266721437546-0grir5k7mru2vr6rqp3phin80hgs19da.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
