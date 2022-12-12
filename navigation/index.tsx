@@ -11,7 +11,14 @@ import * as React from 'react';
 import { ColorSchemeName, Pressable, View, Text, Dimensions } from 'react-native';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import { TabThreeScreen, ModalScreen, NotFoundScreen, TabOneScreen, TabTwoScreen } from '../screens/screensIndex';
+import {
+  TabThreeScreen,
+  ModalScreen,
+  NotFoundScreen,
+  TabOneScreen,
+  TabTwoScreen,
+  LoginScreen,
+} from '../screens/screensIndex';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
@@ -55,7 +62,8 @@ function RootNavigator() {
       />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="Modal" component={ModalScreen} />
+        <Stack.Screen name="Signup" component={ModalScreen} />
+        <Stack.Screen name="Login" component={LoginScreen} />
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -97,7 +105,7 @@ function BottomTabNavigator() {
             ),
           headerRight: () => (
             <Pressable
-              onPress={() => navigation.navigate('Modal')}
+              onPress={() => navigation.navigate('Signup')}
               style={({ pressed }) => ({
                 opacity: pressed ? 0.5 : 1,
               })}
@@ -122,7 +130,7 @@ function BottomTabNavigator() {
             ),
           headerRight: () => (
             <Pressable
-              onPress={() => navigation.navigate('Modal')}
+              onPress={() => navigation.navigate('Signup')}
               style={({ pressed }) => ({
                 opacity: pressed ? 0.5 : 1,
               })}
@@ -146,7 +154,7 @@ function BottomTabNavigator() {
             ),
           headerRight: () => (
             <Pressable
-              onPress={() => navigation.navigate('Modal')}
+              onPress={() => navigation.navigate('Signup')}
               style={({ pressed }) => ({
                 opacity: pressed ? 0.5 : 1,
               })}

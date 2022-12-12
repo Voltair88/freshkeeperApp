@@ -28,6 +28,7 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   const [amountType, setAmountType] = useState('');
   const [storage, setStorage] = useState('');
   const [expiration, setExpiration] = useState('');
+  const [date, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
   const {
     reset,
@@ -55,7 +56,7 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
     if (isSubmitSuccessful) {
       const getDatabase = async () => {
         const docRef = collection(db, 'items');
-        const docSnap = await addDoc(docRef, { name, amount, amountType, storage, expiration });
+        const docSnap = await addDoc(docRef, { name, amount, amountType, storage, expiration, date });
         console.log('Document written with ID: ', docSnap.id);
       };
       getDatabase();

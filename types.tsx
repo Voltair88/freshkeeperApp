@@ -15,7 +15,8 @@ declare global {
 
 export type RootStackParamList = {
   Freshkeeper: NavigatorScreenParams<RootTabParamList> | undefined;
-  Modal: undefined;
+  Signup: undefined;
+  Login: undefined;
   NotFound: undefined;
 };
 
@@ -28,6 +29,8 @@ export type RootTabParamList = {
   TabOne: undefined;
   TabTwo: undefined;
   TabThree: undefined;
+  Signup: undefined;
+  Login: undefined;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<
