@@ -55,7 +55,7 @@ export function LoginScreen({ navigation }: RootTabScreenProps<'Login'>) {
         value={password}
         secureTextEntry
       />
-      <Button title="Login" onPress={handleLogin} />
+      {loading ? <Button title="Loading..." disabled /> : <Button title="Login" onPress={handleLogin} />}
       <Text>{validationMessage}</Text>
       <Button title="Don't have an account? Sign up" onPress={() => navigation.navigate('Signup')} />
     </View>
