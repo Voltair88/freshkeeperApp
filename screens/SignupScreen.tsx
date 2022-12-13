@@ -7,6 +7,7 @@ import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/
 import styles from '../styles';
 import { RootTabScreenProps } from '../types';
 import { AccountScreen } from './Account';
+
 export function ModalScreen({ navigation }: RootTabScreenProps<'Signup'>) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -48,13 +49,11 @@ export function ModalScreen({ navigation }: RootTabScreenProps<'Signup'>) {
     }, []);
   };
 
-  const handleSignout = async () => {
-    await auth.signOut();
-    navigation.navigate('TabOne');
+  const handleLogin = async () => {
+    navigation.navigate('Login');
   };
-  return user ? (
-    <AccountScreen navigation={navigation} />
-  ) : (
+
+  return (
     <View style={styles.container}>
       <Text style={styles.tabsubtitle}>Signup</Text>
       <View style={styles.devider} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
@@ -83,8 +82,9 @@ export function ModalScreen({ navigation }: RootTabScreenProps<'Signup'>) {
       />
       <Text>{validationMessage}</Text>
       {loading ? <Button title="Loading..." disabled={true} /> : <Button title="Signup" onPress={handleSignup} />}
+      <View style={styles.devider} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <Text style={styles.tabsubtitle}>Already have an account?</Text>
-      <Button title="Login" onPress={() => navigation.navigate('Login')} />
+      <Button title="Login" onPress={handleLogin} />
       <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
     </View>
   );

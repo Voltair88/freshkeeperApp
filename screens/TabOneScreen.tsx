@@ -3,12 +3,12 @@ import { Text, View, TextInput } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { useRef, useState, useEffect } from 'react';
-import { Platform, ScrollView, TouchableOpacity } from 'react-native';
+import { Button, Platform, ScrollView, TouchableOpacity } from 'react-native';
 import InputSpinner from 'react-native-input-spinner';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
-import { collection, addDoc } from 'firebase/firestore';
-import { db } from '../firebase';
+import { collection, addDoc, updateDoc, setDoc } from 'firebase/firestore';
+import { db, auth } from '../firebase';
 import moment from 'moment';
 type Inputs = {
   name: string;
@@ -23,12 +23,12 @@ type Inputs = {
  *  choose your products name, quantity, storage and expiration date.
  */
 export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
+  const [user, setUser] = useState(auth.currentUser);
   const [name, setName] = useState('');
   const [amount, setAmount] = useState(0);
   const [amountType, setAmountType] = useState('');
   const [storage, setStorage] = useState('');
   const [expiration, setExpiration] = useState('');
-  const [date, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
   const {
     reset,
@@ -44,6 +44,7 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   function open(pickerRef: any) {
     pickerRef.current.focus();
   }
+
   useEffect(() => {
     register('name', { required: true });
     register('amount', { required: true });
@@ -55,13 +56,25 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   useEffect(() => {
     if (isSubmitSuccessful) {
       const getDatabase = async () => {
+        const dateCreated = moment().format('YYYY-MM-DD');
+        const user = auth.currentUser?.uid;
+        const itemId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
         const docRef = collection(db, 'items');
-        const docSnap = await addDoc(docRef, { name, amount, amountType, storage, expiration, date });
+        const docSnap = await addDoc(docRef, {
+          name,
+          amount,
+          amountType,
+          storage,
+          expiration,
+          dateCreated,
+          user,
+          id: itemId,
+        });
         console.log('Document written with ID: ', docSnap.id);
       };
       getDatabase();
     }
-  }, [isSubmitSuccessful, name, amount, amountType, storage, expiration]);
+  }, [isSubmitSuccessful, name, amount, amountType, storage, expiration, user]);
 
   useEffect(() => {
     if (isSubmitSuccessful) {
@@ -96,7 +109,14 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
     return diffDays;
   };
 
-  return (
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setUser(user);
+    });
+    return unsubscribe;
+  }, []);
+
+  return user ? (
     <ScrollView>
       <View>
         <Text style={styles.tabsubtitle}>choose your product, storage and expiration date.</Text>
@@ -320,5 +340,10 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
         </TouchableOpacity>
       </View>
     </ScrollView>
+  ) : (
+    <View style={styles.container}>
+      <Text>Please loggin</Text>
+      <Button title="Login" onPress={() => navigation.navigate('Login')} />
+    </View>
   );
 }

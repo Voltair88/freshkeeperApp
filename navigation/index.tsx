@@ -11,6 +11,7 @@ import * as React from 'react';
 import { ColorSchemeName, Pressable, View, Text, Dimensions } from 'react-native';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
+import { AccountScreen } from '../screens/Account';
 import {
   TabThreeScreen,
   ModalScreen,
@@ -21,6 +22,7 @@ import {
 } from '../screens/screensIndex';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
+import { auth } from '../firebase';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -64,6 +66,7 @@ function RootNavigator() {
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Signup" component={ModalScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Account" component={AccountScreen} />
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -103,16 +106,34 @@ function BottomTabNavigator() {
             ) : (
               <TabBarIcon2 name="cart-outline" color={'white'} />
             ),
-          headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate('Signup')}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}
-            >
-              <FontAwesome5 name="user-circle" size={25} color={Colors[colorScheme].text} style={{ marginRight: 15 }} />
-            </Pressable>
-          ),
+          headerRight: () =>
+            auth.currentUser ? (
+              <Pressable
+                onPress={() => navigation.navigate('Account')}
+                style={({ pressed }) => ({
+                  opacity: pressed ? 0.5 : 1,
+                })}
+              >
+                <FontAwesome5
+                  name="user-circle"
+                  size={25}
+                  color={Colors[colorScheme].text}
+                  style={{ marginRight: 15 }}
+                />
+              </Pressable>
+            ) : (
+              <Pressable
+                onPress={() => navigation.navigate('Signup')}
+                style={({ pressed }) => ({ opacity: pressed ? 0.5 : 1 })}
+              >
+                <FontAwesome5
+                  name="user-circle"
+                  size={25}
+                  color={Colors[colorScheme].text}
+                  style={{ marginRight: 15 }}
+                />
+              </Pressable>
+            ),
         })}
       />
       <BottomTab.Screen
@@ -128,16 +149,34 @@ function BottomTabNavigator() {
             ) : (
               <TabBarIcon2 name="fridge-outline" color={'white'} />
             ),
-          headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate('Signup')}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}
-            >
-              <FontAwesome5 name="user-circle" size={25} color={Colors[colorScheme].text} style={{ marginRight: 15 }} />
-            </Pressable>
-          ),
+          headerRight: () =>
+            auth.currentUser ? (
+              <Pressable
+                onPress={() => navigation.navigate('Account')}
+                style={({ pressed }) => ({
+                  opacity: pressed ? 0.5 : 1,
+                })}
+              >
+                <FontAwesome5
+                  name="user-circle"
+                  size={25}
+                  color={Colors[colorScheme].text}
+                  style={{ marginRight: 15 }}
+                />
+              </Pressable>
+            ) : (
+              <Pressable
+                onPress={() => navigation.navigate('Signup')}
+                style={({ pressed }) => ({ opacity: pressed ? 0.5 : 1 })}
+              >
+                <FontAwesome5
+                  name="user-circle"
+                  size={25}
+                  color={Colors[colorScheme].text}
+                  style={{ marginRight: 15 }}
+                />
+              </Pressable>
+            ),
         })}
       />
       <BottomTab.Screen
@@ -152,16 +191,34 @@ function BottomTabNavigator() {
             ) : (
               <TabBarIcon2 name="food-outline" color={'white'} />
             ),
-          headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate('Signup')}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}
-            >
-              <FontAwesome5 name="user-circle" size={25} color={Colors[colorScheme].text} style={{ marginRight: 15 }} />
-            </Pressable>
-          ),
+          headerRight: () =>
+            auth.currentUser ? (
+              <Pressable
+                onPress={() => navigation.navigate('Account')}
+                style={({ pressed }) => ({
+                  opacity: pressed ? 0.5 : 1,
+                })}
+              >
+                <FontAwesome5
+                  name="user-circle"
+                  size={25}
+                  color={Colors[colorScheme].text}
+                  style={{ marginRight: 15 }}
+                />
+              </Pressable>
+            ) : (
+              <Pressable
+                onPress={() => navigation.navigate('Signup')}
+                style={({ pressed }) => ({ opacity: pressed ? 0.5 : 1 })}
+              >
+                <FontAwesome5
+                  name="user-circle"
+                  size={25}
+                  color={Colors[colorScheme].text}
+                  style={{ marginRight: 15 }}
+                />
+              </Pressable>
+            ),
         })}
       />
     </BottomTab.Navigator>

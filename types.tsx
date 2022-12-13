@@ -17,6 +17,7 @@ export type RootStackParamList = {
   Freshkeeper: NavigatorScreenParams<RootTabParamList> | undefined;
   Signup: undefined;
   Login: undefined;
+  Account: undefined;
   NotFound: undefined;
 };
 

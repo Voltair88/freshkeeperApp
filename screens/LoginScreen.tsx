@@ -38,16 +38,16 @@ export function LoginScreen({ navigation }: RootTabScreenProps<'Login'>) {
     return unsubscribe;
   }, []);
 
-  return user ? (
-    <View style={styles.container}>
-      <Text style={styles.tabsubtitle}>You are logged in</Text>
-      <Text style={styles.tabsubtitle}>{user.email}</Text>
-      <Button title="Logout" onPress={() => auth.signOut()} />
-    </View>
-  ) : (
+  return (
     <View style={styles.container}>
       <Text style={styles.tabsubtitle}>Login</Text>
-      <TextInput style={styles.logininput} placeholder="Email" onChangeText={(text) => setEmail(text)} value={email} />
+      <TextInput
+        style={styles.logininput}
+        textContentType="emailAddress"
+        placeholder="Email"
+        onChangeText={(text) => setEmail(text)}
+        value={email}
+      />
       <TextInput
         style={styles.logininput}
         placeholder="Password"

@@ -15,11 +15,17 @@ export function AccountScreen(props: any) {
     return unsubscribe;
   }, []);
 
+  const handleSignout = async () => {
+    await auth.signOut();
+    props.navigation.navigate('TabOne');
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.tabsubtitle}>You are logged in</Text>
       <Text style={styles.tabsubtitle}>{user?.email}</Text>
-      <Button title="Logout" onPress={() => auth.signOut()} />
+      <Text style={styles.tabsubtitle}>{user?.uid}</Text>
+      <Button title="Logout" onPress={handleSignout} />
     </View>
   );
 }
