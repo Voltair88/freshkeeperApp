@@ -9,6 +9,7 @@ import RNDateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
 import { collection, addDoc, updateDoc, setDoc } from 'firebase/firestore';
 import { db, auth } from '../firebase';
+import { v4 as uuidv4 } from 'uuid';
 import moment from 'moment';
 type Inputs = {
   name: string;
@@ -46,6 +47,19 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   }
 
   useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setUser(user);
+    });
+    return unsubscribe;
+  }, []);
+
+  useEffect(() => {
+    if (user === null) {
+      navigation.navigate('Login');
+    }
+  }, [user]);
+
+  useEffect(() => {
     register('name', { required: true });
     register('amount', { required: true });
     register('amountType', { required: true });
@@ -58,7 +72,7 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
       const getDatabase = async () => {
         const dateCreated = moment().format('YYYY-MM-DD');
         const user = auth.currentUser?.uid;
-        const itemId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        const itemId = uuidv4();
         const docRef = collection(db, 'items');
         const docSnap = await addDoc(docRef, {
           name,
@@ -109,14 +123,7 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
     return diffDays;
   };
 
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      setUser(user);
-    });
-    return unsubscribe;
-  }, []);
-
-  return user ? (
+  return (
     <ScrollView>
       <View>
         <Text style={styles.tabsubtitle}>choose your product, storage and expiration date.</Text>
@@ -134,6 +141,7 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
           render={({ field: { onChange, value } }) => (
             <TextInput
               placeholder="Enter product name"
+              textContentType="name"
               style={styles.nameinput}
               onChangeText={(value) => {
                 onChange(value);
@@ -340,10 +348,5 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
         </TouchableOpacity>
       </View>
     </ScrollView>
-  ) : (
-    <View style={styles.container}>
-      <Text>Please loggin</Text>
-      <Button title="Login" onPress={() => navigation.navigate('Login')} />
-    </View>
   );
 }

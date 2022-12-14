@@ -13,12 +13,19 @@ export function LoginScreen({ navigation }: RootTabScreenProps<'Login'>) {
   const [loading, setLoading] = React.useState(false);
   const [user, setUser] = React.useState(auth.currentUser);
 
+  React.useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setUser(user);
+    });
+    return unsubscribe;
+  }, []);
+
   const handleLogin = async () => {
     setLoading(true);
     try {
       await signInWithEmailAndPassword(auth, email, password);
       setValidationMessage('Login successful');
-      navigation.navigate('TabOne');
+      navigation.navigate('Account');
     } catch (error: any) {
       if (error.code === 'auth/user-not-found') {
         setValidationMessage('No user found with that email');
@@ -31,12 +38,9 @@ export function LoginScreen({ navigation }: RootTabScreenProps<'Login'>) {
     }
   };
 
-  React.useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      setUser(user);
-    });
-    return unsubscribe;
-  }, []);
+  const handleSignup = async () => {
+    navigation.navigate('Signup');
+  };
 
   return (
     <View style={styles.container}>
@@ -51,13 +55,16 @@ export function LoginScreen({ navigation }: RootTabScreenProps<'Login'>) {
       <TextInput
         style={styles.logininput}
         placeholder="Password"
+        textContentType="password"
         onChangeText={(text) => setPassword(text)}
         value={password}
         secureTextEntry
       />
       {loading ? <Button title="Loading..." disabled /> : <Button title="Login" onPress={handleLogin} />}
       <Text>{validationMessage}</Text>
-      <Button title="Don't have an account? Sign up" onPress={() => navigation.navigate('Signup')} />
+      <Text style={styles.devider} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+      <Text style={styles.tabsubtitle}>Don't have an account?</Text>
+      <Button title=" Sign up" onPress={handleSignup} />
     </View>
   );
 }

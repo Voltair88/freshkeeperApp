@@ -142,7 +142,9 @@ function BottomTabNavigator() {
         options={({ navigation }: RootTabScreenProps<'TabTwo'>) => ({
           title: 'Storage',
           headerTitleAlign: 'center',
-
+          headerStyle: {
+            height: Dimensions.get('window').height * 0.05,
+          },
           tabBarIcon: ({ color }) =>
             useIsFocused() ? (
               <TabBarIcon2 name="fridge" color={color} />
@@ -185,6 +187,9 @@ function BottomTabNavigator() {
         options={({ navigation }: RootTabScreenProps<'TabThree'>) => ({
           title: 'Recipes',
           headerTitleAlign: 'center',
+          headerStyle: {
+            height: Dimensions.get('window').height * 0.05,
+          },
           tabBarIcon: ({ color }) =>
             useIsFocused() ? (
               <TabBarIcon2 name="food" color={color} />

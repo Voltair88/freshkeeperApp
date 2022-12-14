@@ -29,52 +29,49 @@ export function TabTwoScreen({ navigation }: RootTabScreenProps<'TabTwo'>) {
     return unsubscribe;
   }, []);
 
-  if (user) {
-    useFocusEffect(
-      React.useCallback(() => {
-        setLoading(true);
-        const q = query(collection(db, 'items'), where('user', '==', user?.uid));
-        getDocs(q).then((querySnapshot: QuerySnapshot) => {
-          const items: Item[] = [];
-          querySnapshot.forEach((doc) => {
-            items.push({
-              id: doc.id,
-              name: doc.data().name,
-              amount: doc.data().amount,
-              amountType: doc.data().amountType,
-              storage: doc.data().storage,
-              expiration: doc.data().expiration,
-              dateCreated: doc.data().dateCreated,
-              user: doc.data().user,
-            });
+  useFocusEffect(() => {
+    if (user === null) {
+      navigation.navigate('Login');
+    } else {
+      setLoading(true);
+      const q = query(collection(db, 'items'), where('user', '==', user?.uid));
+      getDocs(q).then((querySnapshot: QuerySnapshot) => {
+        const items: Item[] = [];
+        querySnapshot.forEach((doc) => {
+          items.push({
+            id: doc.id,
+            name: doc.data().name,
+            amount: doc.data().amount,
+            amountType: doc.data().amountType,
+            storage: doc.data().storage,
+            expiration: doc.data().expiration,
+            dateCreated: doc.data().dateCreated,
+            user: doc.data().user,
           });
-          setItems(items);
-          setLoading(false);
         });
-      }, [user])
-    );
-  }
+        setItems(items);
+        setLoading(false);
+      });
+    }
+  });
   if (loading) {
     return <Text>Loading...</Text>;
-  }
-
-  if (user === null) {
+  } else if (items.length === 0) {
     return (
       <View style={styles.container}>
-        <Text>Please loggin</Text>
-        <Button title="Login" onPress={() => navigation.navigate('Login')} />
+        <Text style={styles.tabsubtitle}>You have no items</Text>
+        <Button title="Add Item" onPress={() => navigation.navigate('TabOne')} />
       </View>
     );
-  }
-
-  return (
-    <View style={styles.container}>
-      <Text style={styles.tabsubtitle}>Items</Text>
-      {items.map((item) => (
-        <Text style={styles.amountTypeLabel} key={item.id}>
-          {item.name}
-        </Text>
-      ))}
-    </View>
-  );
+  } else
+    return (
+      <View style={styles.container}>
+        <Text style={styles.tabsubtitle}>Items</Text>
+        {items.map((item) => (
+          <Text style={styles.amountTypeLabel} key={item.id}>
+            {item.name}
+          </Text>
+        ))}
+      </View>
+    );
 }

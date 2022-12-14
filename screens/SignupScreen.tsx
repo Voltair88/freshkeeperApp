@@ -1,12 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
-import { Platform, StyleSheet, Button } from 'react-native';
+import { Platform, Button } from 'react-native';
 import { Text, View, TextInput } from '../components/Themed';
 import React from 'react';
 import { auth } from '../firebase';
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import styles from '../styles';
 import { RootTabScreenProps } from '../types';
-import { AccountScreen } from './Account';
 
 export function ModalScreen({ navigation }: RootTabScreenProps<'Signup'>) {
   const [email, setEmail] = React.useState('');
@@ -15,6 +14,19 @@ export function ModalScreen({ navigation }: RootTabScreenProps<'Signup'>) {
   const [validationMessage, setValidationMessage] = React.useState('');
   const [loading, setLoading] = React.useState(false);
   const [user, setUser] = React.useState(auth.currentUser);
+
+  React.useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setUser(user);
+    });
+    return unsubscribe;
+  }, []);
+
+  React.useEffect(() => {
+    if (user === null) {
+      navigation.navigate('Login');
+    }
+  }, [user]);
 
   const handleSignup = async () => {
     if (password !== confirmPassword) {
@@ -41,12 +53,6 @@ export function ModalScreen({ navigation }: RootTabScreenProps<'Signup'>) {
       }
       setLoading(false);
     }
-    React.useEffect(() => {
-      const unsubscribe = auth.onAuthStateChanged((user) => {
-        setUser(user);
-      });
-      return unsubscribe;
-    }, []);
   };
 
   const handleLogin = async () => {
