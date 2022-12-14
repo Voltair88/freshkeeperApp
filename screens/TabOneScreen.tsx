@@ -1,7 +1,8 @@
 import styles from '../styles';
 import { Text, View, TextInput } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
-import { useForm, Controller, SubmitHandler } from 'react-hook-form';
+import { useForm, Controller, SubmitHandler, ControllerProps, UseControllerProps } from 'react-hook-form';
+import { ErrorMessage } from '@hookform/error-message';
 import { useRef, useState, useEffect } from 'react';
 import { Button, Platform, ScrollView, TouchableOpacity } from 'react-native';
 import InputSpinner from 'react-native-input-spinner';
@@ -11,6 +12,14 @@ import { collection, addDoc, updateDoc, setDoc } from 'firebase/firestore';
 import { db, auth } from '../firebase';
 import { v4 as uuidv4 } from 'uuid';
 import moment from 'moment';
+
+interface FormInputs {
+  name: string;
+  amount: number;
+  amountType: string;
+  storage: string;
+  expiration: string;
+}
 type Inputs = {
   name: string;
   amount: number;
@@ -18,6 +27,7 @@ type Inputs = {
   storage: string;
   expiration: string;
 };
+
 /**
  *  In this screen you can add a new item to your storage.
  *
@@ -59,14 +69,30 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
     }
   }, [user]);
 
+  //TODO: test if this works
   useEffect(() => {
-    register('name', { required: true });
-    register('amount', { required: true });
+    register('name', {
+      required: "Product name can't be empty",
+      pattern: {
+        value: /^[A-Za-z]+$/i,
+        message: 'Product name can only contain letters',
+      },
+      minLength: {
+        value: 3,
+        message: 'Product name must be at least 3 characters',
+      },
+      maxLength: {
+        value: 20,
+        message: 'Product name must be less than 20 characters',
+      },
+    });
+    register('amount', { required: true, min: 0, max: 100 });
     register('amountType', { required: true });
     register('storage', { required: true });
-    register('expiration', { required: true });
+    register('expiration', {
+      required: true,
+    });
   }, [register]);
-
   useEffect(() => {
     if (isSubmitSuccessful) {
       const getDatabase = async () => {
@@ -107,7 +133,7 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
     }
   }, [isSubmitSuccessful, reset]);
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const onSubmit: SubmitHandler<Inputs> = (data: FormInputs) => {
     console.log(data);
   };
 
@@ -134,10 +160,7 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
         </View>
         <Controller
           control={control}
-          rules={{
-            maxLength: 100,
-            required: true,
-          }}
+          name="name"
           render={({ field: { onChange, value } }) => (
             <TextInput
               placeholder="Enter product name"
@@ -150,9 +173,8 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
               value={value}
             />
           )}
-          name="name"
         />
-        {errors.name && <Text style={styles.error}>Enter a name</Text>}
+        {errors.name && <Text style={styles.error}>{errors.name.message}</Text>}
         <Text style={styles.devider} />
         <View style={styles.flexrow}>
           <Text style={styles.itemnumber}>2</Text>
@@ -161,10 +183,6 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
         <View style={styles.flexrow}>
           <Controller
             control={control}
-            rules={{
-              maxLength: 100,
-              required: true,
-            }}
             render={({ field: { onChange, value } }) => (
               <InputSpinner
                 style={styles.numberinput}
