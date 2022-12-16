@@ -149,6 +149,53 @@ const styles = StyleSheet.create({
     color: 'rgb(73, 190, 255)',
   },
 
+  // Storage Tab
+
+  storageContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  storageLabel: {
+    height: Dimensions.get('window').height * 0.06,
+    lineHeight: Dimensions.get('window').height * 0.06,
+    fontSize: Dimensions.get('window').width * 0.07,
+    textAlign: 'left',
+    justifyContent: 'center',
+    marginVertical: 10,
+    paddingLeft: 10,
+  },
+
+  itemContainer: {
+    Flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+  },
+  itemName: {
+    fontSize: 16,
+  },
+  item: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  itemheader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    height: Dimensions.get('window').height * 0.06,
+    width: Dimensions.get('window').width * 0.9,
+    marginHorizontal: 20,
+  },
+  itembody: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+  },
+  itemtext: {
+    fontSize: 16,
+    color: 'rgb(73, 190, 255)',
+  },
+
   // Account
 
   // Login

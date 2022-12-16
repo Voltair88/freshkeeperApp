@@ -7,7 +7,19 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "NODE_OPTIONS=--openssl-legacy-provider expo start --web",
-    "test": "jest --watchAll"
+    "test": "jest --watchAll",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "format:staged": "lint-staged",
+    "prepare": "husky install",
+    "postinstall": "husky install",
+    "precommit": "lint-staged",
+    "prepush": "yarn test",
+    "prettier": "prettier --write .",
+    "prettier:check": "prettier --check .",
+    "prettier:staged": "lint-staged"
   },
   "android": {
     "package": "com.freshkeeperapp.app"

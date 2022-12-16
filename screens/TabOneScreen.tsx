@@ -12,6 +12,7 @@ import { collection, addDoc, updateDoc, setDoc } from 'firebase/firestore';
 import { db, auth } from '../firebase';
 import { v4 as uuidv4 } from 'uuid';
 import moment from 'moment';
+import { useFocusEffect } from '@react-navigation/native';
 
 interface FormInputs {
   name: string;
@@ -64,13 +65,6 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   }, []);
 
   useEffect(() => {
-    if (user === null) {
-      navigation.navigate('Login');
-    }
-  }, [user]);
-
-  //TODO: test if this works
-  useEffect(() => {
     register('name', {
       required: "Product name can't be empty",
       pattern: {
@@ -93,7 +87,8 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
       required: true,
     });
   }, [register]);
-  useEffect(() => {
+
+  useFocusEffect(() => {
     if (isSubmitSuccessful) {
       const getDatabase = async () => {
         const dateCreated = moment().format('YYYY-MM-DD');
@@ -114,7 +109,7 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
       };
       getDatabase();
     }
-  }, [isSubmitSuccessful, name, amount, amountType, storage, expiration, user]);
+  });
 
   useEffect(() => {
     if (isSubmitSuccessful) {
@@ -149,6 +144,14 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
     return diffDays;
   };
 
+  if (!user) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.tabsubtitle}>Login to view your items</Text>
+        <Button title="Login" onPress={() => navigation.navigate('Login')} />
+      </View>
+    );
+  }
   return (
     <ScrollView>
       <View>

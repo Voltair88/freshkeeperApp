@@ -22,12 +22,6 @@ export function ModalScreen({ navigation }: RootTabScreenProps<'Signup'>) {
     return unsubscribe;
   }, []);
 
-  React.useEffect(() => {
-    if (user === null) {
-      navigation.navigate('Login');
-    }
-  }, [user]);
-
   const handleSignup = async () => {
     if (password !== confirmPassword) {
       setValidationMessage('Passwords do not match');

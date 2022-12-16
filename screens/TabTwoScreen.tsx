@@ -5,8 +5,8 @@ import { collection, query, where, getDocs, QuerySnapshot } from 'firebase/fires
 import React from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { RootTabScreenProps } from '../types';
-import { Button } from 'react-native';
-
+import { Button, ScrollView } from 'react-native';
+import { Item } from '../components/Item';
 type Item = {
   id: string;
   name: string;
@@ -30,9 +30,7 @@ export function TabTwoScreen({ navigation }: RootTabScreenProps<'TabTwo'>) {
   }, []);
 
   useFocusEffect(() => {
-    if (user === null) {
-      navigation.navigate('Login');
-    } else {
+    if (user) {
       setLoading(true);
       const q = query(collection(db, 'items'), where('user', '==', user?.uid));
       getDocs(q).then((querySnapshot: QuerySnapshot) => {
@@ -50,28 +48,48 @@ export function TabTwoScreen({ navigation }: RootTabScreenProps<'TabTwo'>) {
           });
         });
         setItems(items);
-        setLoading(false);
       });
+      setLoading(false);
     }
   });
-  if (loading) {
-    return <Text>Loading...</Text>;
-  } else if (items.length === 0) {
+
+  if (!user) {
     return (
       <View style={styles.container}>
-        <Text style={styles.tabsubtitle}>You have no items</Text>
-        <Button title="Add Item" onPress={() => navigation.navigate('TabOne')} />
+        <Text style={styles.tabsubtitle}>Login to view your items</Text>
+        <Button title="Login" onPress={() => navigation.navigate('Login')} />
       </View>
     );
-  } else
-    return (
-      <View style={styles.container}>
+  }
+
+  const storages = [
+    { name: 'Freezer', backgroundColor: '#49beff' },
+    { name: 'Fridge', backgroundColor: '#73abff' },
+    { name: 'Pantry', backgroundColor: '#ffe1d5' },
+    { name: 'Other', backgroundColor: '#a6a6a6' },
+  ];
+
+  return (
+    <ScrollView>
+      <View style={styles.storageContainer}>
         <Text style={styles.tabsubtitle}>Items</Text>
-        {items.map((item) => (
-          <Text style={styles.amountTypeLabel} key={item.id}>
-            {item.name}
-          </Text>
-        ))}
+        {loading ? (
+          <Text>Loading...</Text>
+        ) : (
+          storages.map((storage) => (
+            <View key={storage.name}>
+              <Text style={{ ...styles.storageLabel, backgroundColor: storage.backgroundColor }}>{storage.name}</Text>
+              {items
+                .filter((item) => item.storage === storage.name)
+                .map((item) => (
+                  <Item key={item.id} item={item} />
+                ))}
+            </View>
+          ))
+        )}
       </View>
-    );
+    </ScrollView>
+  );
 }
+
+<Text style={{ ...styles.storageLabel, backgroundColor: '#49beff' }}>Freezer</Text>;
