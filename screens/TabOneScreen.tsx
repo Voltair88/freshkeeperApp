@@ -1,9 +1,9 @@
 import styles from '../styles';
-import { Text, View, TextInput } from '../components/Themed';
-import { RootTabScreenProps } from '../types';
-import { useForm, Controller, SubmitHandler, ControllerProps, UseControllerProps } from 'react-hook-form';
-import { useRef, useState, useEffect } from 'react';
-import { Button, Platform, ScrollView, TouchableOpacity } from 'react-native';
+import { Text, View, TextInput } from '../components';
+import { RootTabScreenProps, FormInputs, Inputs, item } from '../types';
+import { useForm, Controller, SubmitHandler } from 'react-hook-form';
+import { useRef, useState, useEffect, useCallback } from 'react';
+import { Platform, ScrollView, TouchableOpacity } from 'react-native';
 import InputSpinner from 'react-native-input-spinner';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
@@ -13,21 +13,8 @@ import { v4 as uuidv4 } from 'uuid';
 import moment from 'moment';
 import { useFocusEffect } from '@react-navigation/native';
 import useCheckUserStatus from '../hooks/useCheckUserStatus';
-
-interface FormInputs {
-  name: string;
-  amount: number;
-  amountType: string;
-  storage: string;
-  expiration: string;
-}
-type Inputs = {
-  name: string;
-  amount: number;
-  amountType: string;
-  storage: string;
-  expiration: string;
-};
+import useSendItem from '../hooks/useSendItem';
+import DirectToLogin from '../components/directToLogin';
 
 /**
  *  In this screen you can add a new item to your storage.
@@ -75,32 +62,6 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
     register('expiration', {
       required: true,
     });
-  }, [register]);
-
-  useFocusEffect(() => {
-    if (isSubmitSuccessful) {
-      const getDatabase = async () => {
-        const dateCreated = moment().format('YYYY-MM-DD');
-        const user = auth.currentUser?.uid;
-        const itemId = uuidv4();
-        const docRef = collection(db, 'items');
-        const docSnap = await addDoc(docRef, {
-          name,
-          amount,
-          amountType,
-          storage,
-          expiration,
-          dateCreated,
-          user,
-          id: itemId,
-        });
-        console.log('Document written with ID: ', docSnap.id);
-      };
-      getDatabase();
-    }
-  });
-
-  useEffect(() => {
     if (isSubmitSuccessful) {
       reset({
         name: '',
@@ -115,7 +76,29 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
       setStorage('');
       setExpiration('');
     }
-  }, [isSubmitSuccessful, reset]);
+  }, [register, reset, isSubmitSuccessful]);
+
+  useFocusEffect(() => {
+    if (isSubmitSuccessful) {
+      const getDatabase = async () => {
+        const dateCreated = moment().format('YYYY-MM-DD');
+        const user = auth.currentUser?.uid;
+        const itemId = uuidv4();
+        const docRef = collection(db, 'items');
+        await addDoc(docRef, {
+          name: name,
+          amount: amount,
+          amountType: amountType,
+          storage: storage,
+          expiration: expiration,
+          dateCreated: dateCreated,
+          user: user,
+          id: itemId,
+        });
+      };
+      getDatabase();
+    }
+  });
 
   const onSubmit: SubmitHandler<Inputs> = (data: FormInputs) => {
     console.log(data);
@@ -134,13 +117,9 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   };
 
   if (!user) {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.tabsubtitle}>Login to view your items</Text>
-        <Button title="Login" onPress={() => navigation.navigate('Login')} />
-      </View>
-    );
+    return <DirectToLogin navigation={navigation} />;
   }
+
   return (
     <ScrollView>
       <View>
@@ -177,8 +156,13 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
             control={control}
             render={({ field: { onChange, value } }) => (
               <InputSpinner
+                type="real"
+                placeholder="0"
                 style={styles.numberinput}
-                max={100}
+                rounded={true}
+                colorPress={'#49BEFF'}
+                precision={2}
+                max={1000}
                 min={0}
                 step={1}
                 buttonStyle={{
@@ -213,7 +197,7 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
               rules={{
                 required: true,
               }}
-              render={({ field: { onChange, value } }) => (
+              render={({ field: { onChange } }) => (
                 <TouchableOpacity
                   style={{
                     height: 48,
@@ -228,11 +212,12 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
                     ref={pickerRef}
                     selectedValue={amountType}
                     style={{ display: 'none', opacity: 0, height: 0, width: 0 }}
-                    onValueChange={(value, itemIndex) => {
+                    onValueChange={(value) => {
                       onChange(value);
                       setAmountType(value);
                     }}
                   >
+                    <Picker.Item label="Options" enabled={false} />
                     <Picker.Item label="L" value="L" />
                     <Picker.Item label="ml" value="ml" />
                     <Picker.Item label="Kg" value="Kg" />
@@ -268,7 +253,7 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
                   open(pickerRef2);
                 }}
               >
-                <Text style={styles.amountTypeLabel}>{storage}</Text>
+                <Text style={styles.amountTypeLabel}>{storage ? storage : 'Choose storage'}</Text>
                 <Picker
                   ref={pickerRef2}
                   selectedValue={storage}
@@ -278,6 +263,7 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
                     setStorage(value);
                   }}
                 >
+                  <Picker.Item label="Options" enabled={false} />
                   <Picker.Item label="Fridge" value="Fridge" />
                   <Picker.Item label="Freezer" value="Freezer" />
                   <Picker.Item label="Pantry" value="Pantry" />
@@ -338,7 +324,7 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
             </View>
             <View>
               <Text style={styles.summarytext}>Quantity</Text>
-              <Text style={styles.summarysubtext}>{amount + ' ' + amountType}</Text>
+              <Text style={styles.summarysubtext}>{amount === 0 ? '' : amount + ' ' + amountType} </Text>
             </View>
             <View>
               <Text style={styles.summarytext}>Storage</Text>
@@ -346,9 +332,7 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
             </View>
             <View>
               <Text style={styles.summarytext}>Expiration date</Text>
-              <Text style={styles.summarysubtext}>
-                {expiration ? DaysLeft(expiration) + ' days left' : 'Choose date'}
-              </Text>
+              <Text style={styles.summarysubtext}>{expiration ? DaysLeft(expiration) + ' days left' : ''}</Text>
             </View>
           </View>
         </View>

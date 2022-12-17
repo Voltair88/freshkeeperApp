@@ -196,6 +196,12 @@ const styles = StyleSheet.create({
     color: 'rgb(73, 190, 255)',
   },
 
+  loading: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
   // Account
 
   // Login

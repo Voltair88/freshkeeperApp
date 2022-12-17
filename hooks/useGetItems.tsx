@@ -12,8 +12,8 @@ export default function useGetItems() {
   const [loading, setLoading] = useState(false);
 
   const debouncedQuery = debounce((user) => {
-    setLoading(true);
     try {
+      setLoading(true);
       const q = query(collection(db, 'items'), where('user', '==', user?.uid));
       getDocs(q).then((querySnapshot: QuerySnapshot) => {
         const items: item[] = [];

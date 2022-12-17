@@ -40,16 +40,36 @@ export type RootTabScreenProps<Screen extends keyof RootTabParamList> = Composit
 >;
 
 export type item = {
-  id: string;
+  id: string | null;
   name: string;
   amount: number;
   amountType: string;
   storage: string;
   expiration: string;
   dateCreated: string;
-  user: string;
+  user: string | null;
 };
 
 export type ItemProps = {
   item: item;
+};
+
+export interface FormInputs {
+  name: string;
+  amount: number;
+  amountType: string;
+  storage: string;
+  expiration: string;
+}
+export type Inputs = {
+  name: string;
+  amount: number;
+  amountType: string;
+  storage: string;
+  expiration: string;
+};
+
+export type storages = {
+  name: string;
+  backgroundColor: string;
 };

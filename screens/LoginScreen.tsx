@@ -4,21 +4,15 @@ import { auth } from '../firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import styles from '../styles';
 import { Button } from 'react-native';
-import { Text, View, TextInput } from '../components/Themed';
+import { Text, View, TextInput } from '../components';
+import useCheckUserStatus from '../hooks/useCheckUserStatus';
 
 export function LoginScreen({ navigation }: RootTabScreenProps<'Login'>) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [validationMessage, setValidationMessage] = React.useState('');
   const [loading, setLoading] = React.useState(false);
-  const [user, setUser] = React.useState(auth.currentUser);
-
-  React.useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      setUser(user);
-    });
-    return unsubscribe;
-  }, []);
+  const user = useCheckUserStatus();
 
   const handleLogin = async () => {
     setLoading(true);

@@ -3,16 +3,10 @@ import { auth } from '../firebase';
 import styles from '../styles';
 import { Text, View } from '../components/Themed';
 import { Button } from 'react-native';
+import useCheckUserStatus from '../hooks/useCheckUserStatus';
 
 export function AccountScreen(props: any) {
-  const [user, setUser] = React.useState(auth.currentUser);
-
-  React.useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      setUser(user);
-    });
-    return unsubscribe;
-  }, []);
+  const user = useCheckUserStatus();
 
   const handleSignout = async () => {
     await auth.signOut();
