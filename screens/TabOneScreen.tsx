@@ -2,20 +2,16 @@ import styles from '../styles';
 import { Text, View, TextInput } from '../components';
 import { RootTabScreenProps, FormInputs, Inputs, item } from '../types';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
-import { useRef, useState, useEffect, useCallback } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Platform, ScrollView, TouchableOpacity } from 'react-native';
 import InputSpinner from 'react-native-input-spinner';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
-import { collection, addDoc, updateDoc, setDoc } from 'firebase/firestore';
-import { db, auth } from '../firebase';
 import { v4 as uuidv4 } from 'uuid';
 import moment from 'moment';
-import { useFocusEffect } from '@react-navigation/native';
 import useCheckUserStatus from '../hooks/useCheckUserStatus';
-import useSendItem from '../hooks/useSendItem';
 import DirectToLogin from '../components/directToLogin';
-
+import { useSendItem } from '../hooks/useSendItem';
 /**
  *  In this screen you can add a new item to your storage.
  *
@@ -40,6 +36,8 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   const pickerRef = useRef(null);
   const pickerRef2 = useRef(null);
 
+  const sendItem = useSendItem();
+
   function open(pickerRef: any) {
     pickerRef.current.focus();
   }
@@ -62,46 +60,24 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
     register('expiration', {
       required: true,
     });
-    if (isSubmitSuccessful) {
-      reset({
-        name: '',
-        amount: 0,
-        amountType: '',
-        storage: '',
-        expiration: '',
-      });
-      setName('');
-      setAmount(0);
-      setAmountType('');
-      setStorage('');
-      setExpiration('');
-    }
+    reset({
+      name: '',
+      amount: 0,
+      amountType: '',
+      storage: '',
+      expiration: '',
+    });
   }, [register, reset, isSubmitSuccessful]);
 
-  useFocusEffect(() => {
-    if (isSubmitSuccessful) {
-      const getDatabase = async () => {
-        const dateCreated = moment().format('YYYY-MM-DD');
-        const user = auth.currentUser?.uid;
-        const itemId = uuidv4();
-        const docRef = collection(db, 'items');
-        await addDoc(docRef, {
-          name: name,
-          amount: amount,
-          amountType: amountType,
-          storage: storage,
-          expiration: expiration,
-          dateCreated: dateCreated,
-          user: user,
-          id: itemId,
-        });
-      };
-      getDatabase();
-    }
-  });
-
-  const onSubmit: SubmitHandler<Inputs> = (data: FormInputs) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<FormInputs> = (data) => {
+    sendItem.sendItem({ ...data, id: uuidv4(), dateCreated: moment().format('YYYY-MM-DD'), user: user?.uid as string });
+    reset();
+    setName('');
+    setAmount(0);
+    setAmountType('');
+    setStorage('');
+    setExpiration('');
+    console.table(data);
   };
 
   const showDatepicker = () => {
@@ -315,6 +291,7 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
           />
         )}
         {DaysLeft(expiration) < 0 && <Text style={styles.error}>Enter a expiration date</Text>}
+        {errors.expiration && <Text style={styles.error}>Enter a expiration date</Text>}
         <Text style={styles.devider} />
         <View>
           <View style={styles.summary}>

@@ -9,12 +9,10 @@ import { item } from '../types';
 export default function useGetItems() {
   const user = useCheckUserStatus();
   const [items, setItems] = useState<item[]>([]);
-  const [loading, setLoading] = useState(false);
 
   const debouncedQuery = debounce((user) => {
     try {
-      setLoading(true);
-      const q = query(collection(db, 'items'), where('user', '==', user?.uid));
+      const q = query(collection(db, `users/${user.uid}/items`));
       getDocs(q).then((querySnapshot: QuerySnapshot) => {
         const items: item[] = [];
         querySnapshot.forEach((doc) => {
@@ -33,8 +31,6 @@ export default function useGetItems() {
       });
     } catch (error) {
       console.error(error);
-    } finally {
-      setLoading(false);
     }
   }, 500);
 
@@ -46,5 +42,5 @@ export default function useGetItems() {
     }, [user])
   );
 
-  return { items, loading };
+  return { items };
 }

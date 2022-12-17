@@ -1,29 +1,25 @@
-import { useFocusEffect } from '@react-navigation/native';
-import { useState, useCallback } from 'react';
-import useCheckUserStatus from './useCheckUserStatus';
 import { item } from '../types';
 import { collection, addDoc } from 'firebase/firestore';
-import moment from 'moment';
-import { v4 as uuidv4 } from 'uuid';
-import { db, auth } from '../firebase';
+import { db } from '../firebase';
+import { useCallback } from 'react';
 
-export default function useSendItem(props: item) {
-  const user = useCheckUserStatus();
-  const sendItem = async () => {
-    const dateCreated = moment().format('YYYY-MM-DD');
-    const itemId = uuidv4();
-    const docRef = collection(db, 'items');
-    await addDoc(docRef, {
-      name: props.name,
-      amount: props.amount,
-      amountType: props.amountType,
-      storage: props.storage,
-      expiration: props.expiration,
-      dateCreated: dateCreated,
-      user: user?.uid || null,
-      id: itemId || null,
-    });
-  };
+export const useSendItem = () => {
+  const sendItem = useCallback(async (item: item) => {
+    try {
+      await addDoc(collection(db, `users/${item.user}/items`), {
+        id: item.id,
+        name: item.name,
+        amount: item.amount,
+        amountType: item.amountType,
+        storage: item.storage,
+        expiration: item.expiration,
+        dateCreated: item.dateCreated,
+        user: item.user,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
 
-  return sendItem;
-}
+  return { sendItem };
+};

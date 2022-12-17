@@ -8,7 +8,7 @@ import DirectToLogin from '../components/directToLogin';
 
 export function TabTwoScreen({ navigation }: RootTabScreenProps<'TabTwo'>) {
   const user = useCheckUserStatus();
-  const { items, loading } = useGetItems();
+  const { items } = useGetItems();
 
   const storages = useStorages();
 
@@ -25,7 +25,9 @@ export function TabTwoScreen({ navigation }: RootTabScreenProps<'TabTwo'>) {
             <Text style={{ ...styles.storageLabel, backgroundColor: storage.backgroundColor }}>{storage.name}</Text>
             {items
               .filter((item) => item.storage === storage.name)
-              .map((item) => (loading ? <Text>Loading...</Text> : <Item key={item.id} item={item} />))}
+              .map((item) => (
+                <Item key={item.id} item={item} />
+              ))}
           </View>
         ))}
       </View>
