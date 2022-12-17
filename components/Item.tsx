@@ -1,33 +1,11 @@
-import React from 'react';
+import { useState } from 'react';
 import { View, Text, Button } from 'react-native';
 import styles from '../styles';
 import DaysLeft from '../hooks/useDaysLeft';
-
-type ItemState = {
-  collapsed: boolean;
-};
-
-type item = {
-  id: string;
-  name: string;
-  amount: number;
-  amountType: string;
-  storage: string;
-  expiration: string;
-  dateCreated: string;
-  user: string;
-};
-
-type ItemProps = {
-  item: item;
-};
-
-interface Item extends React.FC<ItemProps> {
-  state: ItemState;
-}
+import { item, ItemProps } from '../types';
 
 export const Item = ({ item }: ItemProps) => {
-  const [collapsed, setCollapsed] = React.useState(true);
+  const [collapsed, setCollapsed] = useState(true);
   const toggleExpanded = () => {
     setCollapsed(!collapsed);
   };

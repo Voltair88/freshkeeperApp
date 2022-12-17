@@ -1,64 +1,24 @@
 import styles from '../styles';
 import { Text, View } from '../components/Themed';
-import { db, auth } from '../firebase';
-import { collection, query, where, getDocs, QuerySnapshot } from 'firebase/firestore';
-import React from 'react';
-import { useFocusEffect } from '@react-navigation/native';
+import { useMemo } from 'react';
 import { RootTabScreenProps } from '../types';
-import { Button, ScrollView } from 'react-native';
+import { Button, ScrollView, FlatList } from 'react-native';
 import { Item } from '../components/Item';
-import { debounce } from 'lodash';
 import useCheckUserStatus from '../hooks/useCheckUserStatus';
-type Item = {
-  id: string;
-  name: string;
-  amount: number;
-  amountType: string;
-  storage: string;
-  expiration: string;
-  dateCreated: string;
-  user: string;
-};
+import useGetItems from '../hooks/useGetItems';
+
 export function TabTwoScreen({ navigation }: RootTabScreenProps<'TabTwo'>) {
-  const [user, setUser] = React.useState(auth.currentUser);
-  const [items, setItems] = React.useState<Item[]>([]);
-  const [loading, setLoading] = React.useState(false);
+  const user = useCheckUserStatus();
+  const { items, loading } = useGetItems();
 
-  useCheckUserStatus();
-
-  const debouncedQuery = debounce((user) => {
-    setLoading(true);
-    try {
-      const q = query(collection(db, 'items'), where('user', '==', user?.uid));
-      getDocs(q).then((querySnapshot: QuerySnapshot) => {
-        const items: Item[] = [];
-        querySnapshot.forEach((doc) => {
-          items.push({
-            id: doc.id,
-            name: doc.data().name,
-            amount: doc.data().amount,
-            amountType: doc.data().amountType,
-            storage: doc.data().storage,
-            expiration: doc.data().expiration,
-            dateCreated: doc.data().dateCreated,
-            user: doc.data().user,
-          });
-        });
-        setItems(items);
-      });
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  }, 500);
-
-  useFocusEffect(
-    React.useCallback(() => {
-      if (user) {
-        debouncedQuery(user);
-      }
-    }, [user])
+  const storages = useMemo(
+    () => [
+      { name: 'Freezer', backgroundColor: '#49beff' },
+      { name: 'Fridge', backgroundColor: '#73abff' },
+      { name: 'Pantry', backgroundColor: '#ffe1d5' },
+      { name: 'Other', backgroundColor: '#a6a6a6' },
+    ],
+    []
   );
 
   if (!user) {
@@ -69,16 +29,6 @@ export function TabTwoScreen({ navigation }: RootTabScreenProps<'TabTwo'>) {
       </View>
     );
   }
-
-  const storages = React.useMemo(
-    () => [
-      { name: 'Freezer', backgroundColor: '#49beff' },
-      { name: 'Fridge', backgroundColor: '#73abff' },
-      { name: 'Pantry', backgroundColor: '#ffe1d5' },
-      { name: 'Other', backgroundColor: '#a6a6a6' },
-    ],
-    []
-  );
 
   return (
     <ScrollView>
@@ -102,5 +52,3 @@ export function TabTwoScreen({ navigation }: RootTabScreenProps<'TabTwo'>) {
     </ScrollView>
   );
 }
-
-<Text style={{ ...styles.storageLabel, backgroundColor: '#49beff' }}>Freezer</Text>;

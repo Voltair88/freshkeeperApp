@@ -2,7 +2,6 @@ import styles from '../styles';
 import { Text, View, TextInput } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import { useForm, Controller, SubmitHandler, ControllerProps, UseControllerProps } from 'react-hook-form';
-import { ErrorMessage } from '@hookform/error-message';
 import { useRef, useState, useEffect } from 'react';
 import { Button, Platform, ScrollView, TouchableOpacity } from 'react-native';
 import InputSpinner from 'react-native-input-spinner';
@@ -36,7 +35,7 @@ type Inputs = {
  *  choose your products name, quantity, storage and expiration date.
  */
 export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
-  const [user, setUser] = useState(auth.currentUser);
+  const user = useCheckUserStatus();
   const [name, setName] = useState('');
   const [amount, setAmount] = useState(0);
   const [amountType, setAmountType] = useState('');
@@ -57,8 +56,6 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   function open(pickerRef: any) {
     pickerRef.current.focus();
   }
-
-  useCheckUserStatus();
 
   useEffect(() => {
     register('name', {
