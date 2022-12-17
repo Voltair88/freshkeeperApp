@@ -13,6 +13,7 @@ import { db, auth } from '../firebase';
 import { v4 as uuidv4 } from 'uuid';
 import moment from 'moment';
 import { useFocusEffect } from '@react-navigation/native';
+import useCheckUserStatus from '../hooks/useCheckUserStatus';
 
 interface FormInputs {
   name: string;
@@ -57,20 +58,11 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
     pickerRef.current.focus();
   }
 
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      setUser(user);
-    });
-    return unsubscribe;
-  }, []);
+  useCheckUserStatus();
 
   useEffect(() => {
     register('name', {
       required: "Product name can't be empty",
-      pattern: {
-        value: /^[A-Za-z]+$/i,
-        message: 'Product name can only contain letters',
-      },
       minLength: {
         value: 3,
         message: 'Product name must be at least 3 characters',

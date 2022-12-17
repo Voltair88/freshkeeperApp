@@ -7,6 +7,8 @@ import { useFocusEffect } from '@react-navigation/native';
 import { RootTabScreenProps } from '../types';
 import { Button, ScrollView } from 'react-native';
 import { Item } from '../components/Item';
+import { debounce } from 'lodash';
+import useCheckUserStatus from '../hooks/useCheckUserStatus';
 type Item = {
   id: string;
   name: string;
@@ -22,16 +24,11 @@ export function TabTwoScreen({ navigation }: RootTabScreenProps<'TabTwo'>) {
   const [items, setItems] = React.useState<Item[]>([]);
   const [loading, setLoading] = React.useState(false);
 
-  React.useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      setUser(user);
-    });
-    return unsubscribe;
-  }, []);
+  useCheckUserStatus();
 
-  useFocusEffect(() => {
-    if (user) {
-      setLoading(true);
+  const debouncedQuery = debounce((user) => {
+    setLoading(true);
+    try {
       const q = query(collection(db, 'items'), where('user', '==', user?.uid));
       getDocs(q).then((querySnapshot: QuerySnapshot) => {
         const items: Item[] = [];
@@ -49,9 +46,20 @@ export function TabTwoScreen({ navigation }: RootTabScreenProps<'TabTwo'>) {
         });
         setItems(items);
       });
+    } catch (error) {
+      console.error(error);
+    } finally {
       setLoading(false);
     }
-  });
+  }, 500);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      if (user) {
+        debouncedQuery(user);
+      }
+    }, [user])
+  );
 
   if (!user) {
     return (
@@ -62,19 +70,22 @@ export function TabTwoScreen({ navigation }: RootTabScreenProps<'TabTwo'>) {
     );
   }
 
-  const storages = [
-    { name: 'Freezer', backgroundColor: '#49beff' },
-    { name: 'Fridge', backgroundColor: '#73abff' },
-    { name: 'Pantry', backgroundColor: '#ffe1d5' },
-    { name: 'Other', backgroundColor: '#a6a6a6' },
-  ];
+  const storages = React.useMemo(
+    () => [
+      { name: 'Freezer', backgroundColor: '#49beff' },
+      { name: 'Fridge', backgroundColor: '#73abff' },
+      { name: 'Pantry', backgroundColor: '#ffe1d5' },
+      { name: 'Other', backgroundColor: '#a6a6a6' },
+    ],
+    []
+  );
 
   return (
     <ScrollView>
       <View style={styles.storageContainer}>
         <Text style={styles.tabsubtitle}>Items</Text>
         {loading ? (
-          <Text>Loading...</Text>
+          <Text style={styles.tabsubtitle}>Loading...</Text>
         ) : (
           storages.map((storage) => (
             <View key={storage.name}>

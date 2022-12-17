@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, Button } from 'react-native';
 import styles from '../styles';
+import DaysLeft from '../hooks/useDaysLeft';
 
 type ItemState = {
   collapsed: boolean;
@@ -42,7 +43,7 @@ export const Item = ({ item }: ItemProps) => {
           <Text style={styles.itemtext}>
             Amount: {item.amount} {item.amountType}
           </Text>
-          <Text style={styles.itemtext}>Expiration: {item.expiration}</Text>
+          <Text style={styles.itemtext}>Expiration: {DaysLeft(item.expiration)} </Text>
         </View>
       )}
     </View>
