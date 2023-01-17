@@ -1,10 +1,9 @@
 import styles from '../styles';
-import { Text, View, useStorages, Item } from '../components';
+import { Text, View, useStorages, Item, DirectToLogin } from '../components';
 import { RootTabScreenProps } from '../types';
 import { Button, ScrollView } from 'react-native';
 import useCheckUserStatus from '../hooks/useCheckUserStatus';
 import useGetItems from '../hooks/useGetItems';
-import DirectToLogin from '../components/directToLogin';
 
 export function TabTwoScreen({ navigation }: RootTabScreenProps<'TabTwo'>) {
   const user = useCheckUserStatus();
@@ -16,6 +15,7 @@ export function TabTwoScreen({ navigation }: RootTabScreenProps<'TabTwo'>) {
     return <DirectToLogin navigation={navigation} />;
   }
 
+  console.table(items);
   return (
     <ScrollView>
       <View style={styles.storageContainer}>

@@ -16,16 +16,7 @@ export default function useGetItems() {
       getDocs(q).then((querySnapshot: QuerySnapshot) => {
         const items: item[] = [];
         querySnapshot.forEach((doc) => {
-          items.push({
-            id: doc.id,
-            name: doc.data().name,
-            amount: doc.data().amount,
-            amountType: doc.data().amountType,
-            storage: doc.data().storage,
-            expiration: doc.data().expiration,
-            dateCreated: doc.data().dateCreated,
-            user: doc.data().user,
-          });
+          items.push({ ...doc.data(), id: doc.id } as item);
         });
         setItems(items);
       });

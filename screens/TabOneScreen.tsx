@@ -1,6 +1,6 @@
 import styles from '../styles';
 import { Text, View, TextInput } from '../components';
-import { RootTabScreenProps, FormInputs, Inputs, item } from '../types';
+import { RootTabScreenProps, FormInputs, Inputs } from '../types';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { useRef, useState, useEffect } from 'react';
 import { Platform, ScrollView, TouchableOpacity } from 'react-native';
@@ -10,7 +10,7 @@ import { Picker } from '@react-native-picker/picker';
 import { v4 as uuidv4 } from 'uuid';
 import moment from 'moment';
 import useCheckUserStatus from '../hooks/useCheckUserStatus';
-import DirectToLogin from '../components/directToLogin';
+import { DirectToLogin } from '../components';
 import { useSendItem } from '../hooks/useSendItem';
 /**
  *  In this screen you can add a new item to your storage.
@@ -24,6 +24,7 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   const [amountType, setAmountType] = useState('');
   const [storage, setStorage] = useState('');
   const [expiration, setExpiration] = useState('');
+  const [showDateWarning, setShowDateWarning] = useState(false);
   const [show, setShow] = useState(false);
   const {
     reset,
@@ -33,64 +34,66 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
     formState: { errors, isSubmitSuccessful },
   } = useForm<Inputs>();
 
-  const pickerRef = useRef(null);
-  const pickerRef2 = useRef(null);
-
-  const sendItem = useSendItem();
-
-  function open(pickerRef: any) {
-    pickerRef.current.focus();
-  }
-
-  useEffect(() => {
-    register('name', {
-      required: "Product name can't be empty",
-      minLength: {
-        value: 3,
-        message: 'Product name must be at least 3 characters',
-      },
-      maxLength: {
-        value: 20,
-        message: 'Product name must be less than 20 characters',
-      },
-    });
-    register('amount', { required: true, min: 0, max: 100 });
-    register('amountType', { required: true });
-    register('storage', { required: true });
-    register('expiration', {
-      required: true,
-    });
-    reset({
-      name: '',
-      amount: 0,
-      amountType: '',
-      storage: '',
-      expiration: '',
-    });
-  }, [register, reset, isSubmitSuccessful]);
-
-  const onSubmit: SubmitHandler<FormInputs> = (data) => {
-    sendItem.sendItem({ ...data, id: uuidv4(), dateCreated: moment().format('YYYY-MM-DD'), user: user?.uid as string });
-    reset();
+  const resetStates = () => {
     setName('');
     setAmount(0);
     setAmountType('');
     setStorage('');
     setExpiration('');
-    console.table(data);
   };
 
+  const amountTypeRef = useRef(null);
+  const storageRef = useRef(null);
   const showDatepicker = () => {
     setShow(true);
   };
 
-  const DaysLeft = (date: string) => {
-    const expirationdate = new Date(date);
-    const todaysdate = new Date();
-    const diffTime = Math.abs(todaysdate.getTime() - expirationdate.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays;
+  const sendItem = useSendItem();
+
+  function open(amountTypeRef: any) {
+    amountTypeRef.current.focus();
+  }
+
+  useEffect(() => {
+    // Register form fields with React Hook Form
+    register('name');
+    register('amount');
+    register('amountType');
+    register('storage');
+    register('expiration');
+    // Reset form fields to empty
+  }, [register, reset, isSubmitSuccessful]);
+
+  const onSubmit: SubmitHandler<FormInputs> = (data) => {
+    if (expiration === '') {
+      setShowDateWarning(true);
+    } else {
+      sendItem.sendItem({
+        ...data,
+        id: uuidv4(),
+        dateCreated: moment().format('YYYY-MM-DD'),
+        user: user?.uid as string,
+      });
+      reset();
+      resetStates();
+    }
   };
+
+  function showDateWarningText() {
+    if (showDateWarning) {
+      return <Text style={styles.error}>Enter an expiration date</Text>;
+    } else {
+      null;
+    }
+  }
+
+  function daysLeftSummary(expirationDate: string): number {
+    const expiration = new Date(expirationDate);
+    const today = new Date();
+    const diff = Math.abs(today.getTime() - expiration.getTime());
+    const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+    return days;
+  }
 
   if (!user) {
     return <DirectToLogin navigation={navigation} />;
@@ -106,8 +109,9 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
           <Text style={styles.itemname}>Add product name</Text>
         </View>
         <Controller
-          control={control}
           name="name"
+          control={control}
+          rules={{ required: true }}
           render={({ field: { onChange, value } }) => (
             <TextInput
               placeholder="Enter product name"
@@ -121,7 +125,7 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
             />
           )}
         />
-        {errors.name && <Text style={styles.error}>{errors.name.message}</Text>}
+        {errors.name && <Text style={styles.error}>Enter a name</Text>}
         <Text style={styles.devider} />
         <View style={styles.flexrow}>
           <Text style={styles.itemnumber}>2</Text>
@@ -129,7 +133,15 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
         </View>
         <View style={styles.flexrow}>
           <Controller
+            name="amount"
             control={control}
+            rules={{
+              required: true,
+              min: {
+                value: 1,
+                message: 'Enter an amount',
+              },
+            }}
             render={({ field: { onChange, value } }) => (
               <InputSpinner
                 type="real"
@@ -138,7 +150,7 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
                 rounded={true}
                 colorPress={'#49BEFF'}
                 precision={2}
-                max={1000}
+                max={100}
                 min={0}
                 step={1}
                 buttonStyle={{
@@ -165,10 +177,10 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
                 }}
               />
             )}
-            name="amount"
           />
           <View style={styles.picker}>
             <Controller
+              name="amountType"
               control={control}
               rules={{
                 required: true,
@@ -181,11 +193,11 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
                     alignItems: 'center',
                   }}
                   onPress={() => {
-                    open(pickerRef);
+                    open(amountTypeRef);
                   }}
                 >
                   <Picker
-                    ref={pickerRef}
+                    ref={amountTypeRef}
                     selectedValue={amountType}
                     style={{ display: 'none', opacity: 0, height: 0, width: 0 }}
                     onValueChange={(value) => {
@@ -202,14 +214,13 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
                   </Picker>
                 </TouchableOpacity>
               )}
-              name="amountType"
             />
             <View style={styles.amountTypeLabelContainer} pointerEvents="none">
               <Text style={styles.amountTypeLabel}>{amountType}</Text>
             </View>
           </View>
         </View>
-        {errors.amount && <Text style={styles.error}>Enter a amount</Text>}
+        {errors.amount && <Text style={styles.error}>{errors.amount.message}</Text>}
         {errors.amountType && <Text style={styles.error}>Enter a amount type</Text>}
         <Text style={styles.devider} />
         <View style={styles.flexrow}>
@@ -218,6 +229,7 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
         </View>
         <View style={styles.storage}>
           <Controller
+            name="storage"
             control={control}
             rules={{
               required: true,
@@ -226,12 +238,12 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
               <TouchableOpacity
                 style={styles.storageinput}
                 onPress={() => {
-                  open(pickerRef2);
+                  open(storageRef);
                 }}
               >
                 <Text style={styles.amountTypeLabel}>{storage ? storage : 'Choose storage'}</Text>
                 <Picker
-                  ref={pickerRef2}
+                  ref={storageRef}
                   selectedValue={storage}
                   style={{ display: 'none', opacity: 0, height: 0, width: 0 }}
                   onValueChange={(value, itemIndex) => {
@@ -247,7 +259,6 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
                 </Picker>
               </TouchableOpacity>
             )}
-            name="storage"
           />
         </View>
         {errors.storage && <Text style={styles.error}>Enter a storage</Text>}
@@ -256,42 +267,36 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
           <Text style={styles.itemnumber}>3</Text>
           <Text style={styles.itemname}> Choose expiration date</Text>
         </View>
-        <TouchableOpacity
-          style={styles.dateinput}
-          onPress={() => {
-            showDatepicker();
-          }}
-        >
-          <Text style={styles.datetext}>{expiration ? moment(expiration).format('DD/MM/YYYY') : 'Choose date'}</Text>
-        </TouchableOpacity>
-        {show && (
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-            }}
-            {...register('expiration')}
-            render={({ field: { onChange, value } }) => (
-              <RNDateTimePicker
-                testID="dateTimePicker"
-                value={value ? new Date(value) : new Date()}
-                mode={'date'}
-                minimumDate={new Date()}
-                is24Hour={true}
-                display="default"
-                onChange={(event, selectedDate) => {
-                  const currentDate = selectedDate as Date;
-                  setShow(Platform.OS === 'ios');
-                  onChange(currentDate.toISOString());
-                  setExpiration(currentDate.toISOString());
-                }}
-              />
-            )}
-            name="expiration"
-          />
-        )}
-        {DaysLeft(expiration) < 0 && <Text style={styles.error}>Enter a expiration date</Text>}
-        {errors.expiration && <Text style={styles.error}>Enter a expiration date</Text>}
+        <View>
+          <TouchableOpacity style={styles.dateinput} onPress={showDatepicker}>
+            <Text style={styles.datetext}>{expiration ? moment(expiration).format('DD/MM/YYYY') : 'Choose date'}</Text>
+          </TouchableOpacity>
+          {show && (
+            <Controller
+              name="expiration"
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { onChange, value } }) => (
+                <RNDateTimePicker
+                  testID="dateTimePicker"
+                  value={value ? new Date(value) : new Date()}
+                  mode={'date'}
+                  minimumDate={new Date()}
+                  is24Hour={true}
+                  display="default"
+                  onChange={(event, selectedDate) => {
+                    const currentDate = selectedDate as Date;
+                    setShow(Platform.OS === 'ios');
+                    onChange(currentDate.toISOString());
+                    setExpiration(currentDate.toISOString());
+                  }}
+                />
+              )}
+            />
+          )}
+        </View>
+        {errors.expiration && <Text style={styles.error}>{errors.expiration.message}</Text>}
+        {showDateWarningText()}
         <Text style={styles.devider} />
         <View>
           <View style={styles.summary}>
@@ -309,7 +314,7 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
             </View>
             <View>
               <Text style={styles.summarytext}>Expiration date</Text>
-              <Text style={styles.summarysubtext}>{expiration ? DaysLeft(expiration) + ' days left' : ''}</Text>
+              <Text style={styles.summarysubtext}>{expiration ? daysLeftSummary(expiration) + ' days left' : ''}</Text>
             </View>
           </View>
         </View>

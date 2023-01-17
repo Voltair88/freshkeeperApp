@@ -3,7 +3,7 @@ import { Button } from 'react-native';
 import styles from '../styles';
 import useCheckUserStatus from '../hooks/useCheckUserStatus';
 
-export default function DirectToLogin({ navigation }: any) {
+export function DirectToLogin({ navigation }: any) {
   const user = useCheckUserStatus();
   const handleOnPress = () => {
     navigation.navigate('Login');
