@@ -9,7 +9,7 @@ import { useFocusEffect } from '@react-navigation/native';
 
 export function TabTwoScreen({ navigation }: RootTabScreenProps<'TabTwo'>) {
   const user = useCheckUserStatus();
-  const { items } = useGetItems();
+  const { items, isLoading } = useGetItems();
 
   const storages = useStorages();
 
@@ -24,11 +24,11 @@ export function TabTwoScreen({ navigation }: RootTabScreenProps<'TabTwo'>) {
         {storages.map((storage) => (
           <View key={storage.name}>
             <Text style={{ ...styles.storageLabel, backgroundColor: storage.backgroundColor }}>{storage.name}</Text>
-            {items
-              .filter((item) => item.storage === storage.name)
-              .map((item) => (
-                <Item key={item.id} item={item} />
-              ))}
+            {isLoading ? (
+              <Text>Loading...</Text>
+            ) : (
+              items.filter((item) => item.storage === storage.name).map((item) => <Item key={item.id} item={item} />)
+            )}
           </View>
         ))}
       </View>

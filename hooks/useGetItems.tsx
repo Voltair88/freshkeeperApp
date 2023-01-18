@@ -9,16 +9,19 @@ import { item } from '../types';
 export default function useGetItems() {
   const user = useCheckUserStatus();
   const [items, setItems] = useState<item[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(
+  useFocusEffect(
     useCallback(() => {
       if (user) {
         debouncedQuery(user);
       }
     }, [user])
   );
+
   const debouncedQuery = debounce((user) => {
     try {
+      setIsLoading(true);
       const q = query(collection(db, `users/${user.uid}/items`));
       getDocs(q).then((querySnapshot: QuerySnapshot) => {
         const items: item[] = [];
@@ -30,11 +33,8 @@ export default function useGetItems() {
     } catch (error) {
       console.error(error);
     }
+    setIsLoading(false);
   }, 500);
 
-  useMemo(() => {
-    return { items };
-  }, [items]);
-
-  return { items };
+  return { items, isLoading };
 }

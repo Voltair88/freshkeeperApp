@@ -194,12 +194,34 @@ const styles = StyleSheet.create({
   itemtext: {
     fontSize: 16,
     color: 'rgb(73, 190, 255)',
+    position: 'absolute',
+    right: 20,
   },
 
   loading: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+
+  itembuttons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    height: Dimensions.get('window').height * 0.1,
+    marginHorizontal: 60,
+  },
+  deleteButton: {
+    height: Dimensions.get('window').height * 0.1,
+    width: Dimensions.get('window').width * 0.2,
+    borderRadius: Dimensions.get('window').height * 0.06,
+    borderColor: '#49BEFF',
+    borderWidth: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  deleteButtonText: {
+    color: 'black',
   },
 
   // Account
