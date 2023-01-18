@@ -1,6 +1,6 @@
 import { db } from '../firebase';
-import { collection, query, where, getDocs, QuerySnapshot } from 'firebase/firestore';
-import { useState, useCallback } from 'react';
+import { collection, query, getDocs, QuerySnapshot } from 'firebase/firestore';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { debounce } from 'lodash';
 import { useFocusEffect } from '@react-navigation/native';
 import useCheckUserStatus from './useCheckUserStatus';
@@ -10,6 +10,13 @@ export default function useGetItems() {
   const user = useCheckUserStatus();
   const [items, setItems] = useState<item[]>([]);
 
+  useEffect(
+    useCallback(() => {
+      if (user) {
+        debouncedQuery(user);
+      }
+    }, [user])
+  );
   const debouncedQuery = debounce((user) => {
     try {
       const q = query(collection(db, `users/${user.uid}/items`));
@@ -25,13 +32,9 @@ export default function useGetItems() {
     }
   }, 500);
 
-  useFocusEffect(
-    useCallback(() => {
-      if (user) {
-        debouncedQuery(user);
-      }
-    }, [user])
-  );
+  useMemo(() => {
+    return { items };
+  }, [items]);
 
   return { items };
 }

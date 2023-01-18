@@ -1,9 +1,11 @@
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import styles from '../styles';
 import { Text, View, useStorages, Item, DirectToLogin } from '../components';
 import { RootTabScreenProps } from '../types';
 import { Button, ScrollView } from 'react-native';
 import useCheckUserStatus from '../hooks/useCheckUserStatus';
 import useGetItems from '../hooks/useGetItems';
+import { useFocusEffect } from '@react-navigation/native';
 
 export function TabTwoScreen({ navigation }: RootTabScreenProps<'TabTwo'>) {
   const user = useCheckUserStatus();
@@ -15,7 +17,6 @@ export function TabTwoScreen({ navigation }: RootTabScreenProps<'TabTwo'>) {
     return <DirectToLogin navigation={navigation} />;
   }
 
-  console.table(items);
   return (
     <ScrollView>
       <View style={styles.storageContainer}>

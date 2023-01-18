@@ -1,14 +1,18 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { View, Text, Button } from 'react-native';
 import styles from '../styles';
-import DaysLeft from '../hooks/useDaysLeft';
-import { item, ItemProps } from '../types';
+import { DaysLeft, useDeleteItem } from '../hooks';
+import { ItemProps } from '../types';
+import useCheckUserStatus from '../hooks/useCheckUserStatus';
+import { useFocusEffect } from '@react-navigation/native';
 
 export const Item = ({ item }: ItemProps) => {
+  const user = useCheckUserStatus();
   const [collapsed, setCollapsed] = useState(true);
   const toggleExpanded = () => {
     setCollapsed(!collapsed);
   };
+  const handleDelete = useDeleteItem(item, user);
 
   return (
     <View style={styles.item}>
@@ -22,6 +26,8 @@ export const Item = ({ item }: ItemProps) => {
             Amount: {item.amount} {item.amountType}
           </Text>
           <Text style={styles.itemtext}>Expiration: {DaysLeft(item.expiration)} </Text>
+          <Button title="Edit" onPress={() => {}} />
+          <Button title="Delete" onPress={handleDelete} />
         </View>
       )}
     </View>
