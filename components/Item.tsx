@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { View, Text, Button, TouchableOpacity, Alert, Pressable, Animated } from 'react-native';
 import styles from '../styles';
 import { DaysLeft, useDeleteItem, useEditItem } from '../hooks';
@@ -10,19 +10,37 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 export const Item = ({ item }: ItemProps) => {
   const user = useCheckUserStatus();
   const [collapsed, setCollapsed] = useState(true);
+  const animatedValue = useRef(new Animated.Value(0)).current;
+
+  // animate item expansion and collapse
+
+  useEffect(() => {
+    if (collapsed) {
+      Animated.timing(animatedValue, {
+        toValue: 0,
+        duration: 200,
+        useNativeDriver: true,
+      }).start();
+    } else {
+      Animated.timing(animatedValue, {
+        toValue: 1,
+        duration: 200,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [collapsed]);
+
+  const height = collapsed ? 0 : 50;
+  const containerHeight = animatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, height],
+  });
+
   const toggleExpanded = () => {
     setCollapsed(!collapsed);
   };
 
-  //animate the collapse of the item body when toggleExpanded is called
-  const [height] = useState(new Animated.Value(50));
-  useEffect(() => {
-    Animated.timing(height, {
-      toValue: collapsed ? 20 : 100,
-      duration: 200,
-      useNativeDriver: true,
-    }).start();
-  }, [collapsed]);
+  // delete item and prompt user to confirm
 
   const promptDelete = () => {
     Alert.alert('Delete Item', 'Are you sure you want to delete this item?', [
@@ -37,28 +55,28 @@ export const Item = ({ item }: ItemProps) => {
   return (
     <View style={styles.item}>
       <TouchableOpacity style={styles.itembody} onPress={toggleExpanded}>
-        <Animated.View style={{ ...styles.itemheader, transform: [{ translateY: height }] }}>
+        <View style={styles.itemheader}>
           <Text style={styles.itemname}>{item.name}</Text>
           <Text style={styles.itemtext}>
             {item.amount} {item.amountType} {DaysLeft(item.expiration)}
           </Text>
           <MaterialCommunityIcons name={collapsed ? 'chevron-right' : 'chevron-down'} size={24} color="black" />
-        </Animated.View>
+        </View>
+      </TouchableOpacity>
+      <Animated.View style={{ height: containerHeight, overflow: 'hidden' }}>
         {!collapsed && (
-          <View style={styles.itembody}>
-            <View style={styles.itembuttons}>
-              <Pressable style={styles.deleteButton} onPress={promptDelete}>
-                <MaterialCommunityIcons name="delete-forever" size={24} color="black" />
-                <Text style={styles.deleteButtonText}>Delete</Text>
-              </Pressable>
-              <Pressable style={styles.deleteButton}>
-                <MaterialCommunityIcons name="pencil" size={24} color="black" />
-                <Text style={styles.deleteButtonText}>Edit</Text>
-              </Pressable>
-            </View>
+          <View style={styles.itembuttons}>
+            <Pressable style={styles.deleteButton} onPress={promptDelete}>
+              <MaterialCommunityIcons name="delete-forever" size={24} color="black" />
+              <Text style={styles.deleteButtonText}>Delete</Text>
+            </Pressable>
+            <Pressable style={styles.deleteButton}>
+              <MaterialCommunityIcons name="pencil" size={24} color="black" />
+              <Text style={styles.deleteButtonText}>Edit</Text>
+            </Pressable>
           </View>
         )}
-      </TouchableOpacity>
+      </Animated.View>
     </View>
   );
 };
