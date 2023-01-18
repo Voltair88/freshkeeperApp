@@ -171,14 +171,10 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
   },
-  itemName: {
-    fontSize: 16,
-  },
   item: {
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
-    top: 10,
   },
   itemheader: {
     flexDirection: 'row',

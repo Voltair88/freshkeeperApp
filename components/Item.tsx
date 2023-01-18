@@ -1,44 +1,31 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { View, Text, Button, TouchableOpacity, Alert, Pressable, Animated } from 'react-native';
+import { View, Text, Button, TouchableOpacity, Alert, Pressable } from 'react-native';
 import styles from '../styles';
 import { DaysLeft, useDeleteItem, useEditItem } from '../hooks';
 import { ItemProps } from '../types';
 import useCheckUserStatus from '../hooks/useCheckUserStatus';
 import { useFocusEffect } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-
+import Animated, { useSharedValue, withTiming, useAnimatedStyle, Easing } from 'react-native-reanimated';
 export const Item = ({ item }: ItemProps) => {
   const user = useCheckUserStatus();
   const [collapsed, setCollapsed] = useState(true);
-  const animatedValue = useRef(new Animated.Value(0)).current;
-
-  // animate item expansion and collapse
-
-  useEffect(() => {
-    if (collapsed) {
-      Animated.timing(animatedValue, {
-        toValue: 0,
-        duration: 200,
-        useNativeDriver: true,
-      }).start();
-    } else {
-      Animated.timing(animatedValue, {
-        toValue: 1,
-        duration: 200,
-        useNativeDriver: true,
-      }).start();
-    }
-  }, [collapsed]);
-
-  const height = collapsed ? 0 : 50;
-  const containerHeight = animatedValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, height],
-  });
+  const containerHeight = useSharedValue(0);
 
   const toggleExpanded = () => {
+    if (collapsed) {
+      containerHeight.value = withTiming(50, { duration: 200, easing: Easing.bezier(0.25, 0.1, 0.25, 1) });
+    } else {
+      containerHeight.value = withTiming(0, { duration: 200, easing: Easing.bezier(0.25, 0.1, 0.25, 1) });
+    }
     setCollapsed(!collapsed);
   };
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      height: containerHeight.value,
+    };
+  });
 
   // delete item and prompt user to confirm
 
@@ -63,19 +50,15 @@ export const Item = ({ item }: ItemProps) => {
           <MaterialCommunityIcons name={collapsed ? 'chevron-right' : 'chevron-down'} size={24} color="black" />
         </View>
       </TouchableOpacity>
-      <Animated.View style={{ height: containerHeight, overflow: 'hidden' }}>
-        {!collapsed && (
-          <View style={styles.itembuttons}>
-            <Pressable style={styles.deleteButton} onPress={promptDelete}>
-              <MaterialCommunityIcons name="delete-forever" size={24} color="black" />
-              <Text style={styles.deleteButtonText}>Delete</Text>
-            </Pressable>
-            <Pressable style={styles.deleteButton}>
-              <MaterialCommunityIcons name="pencil" size={24} color="black" />
-              <Text style={styles.deleteButtonText}>Edit</Text>
-            </Pressable>
-          </View>
-        )}
+      <Animated.View style={[styles.itembuttons, animatedStyle]}>
+        <Pressable style={styles.deleteButton} onPress={promptDelete}>
+          <MaterialCommunityIcons name="delete-forever" size={24} color="black" />
+          <Text style={styles.deleteButtonText}>Delete</Text>
+        </Pressable>
+        <Pressable style={styles.deleteButton}>
+          <MaterialCommunityIcons name="pencil" size={24} color="black" />
+          <Text style={styles.deleteButtonText}>Edit</Text>
+        </Pressable>
       </Animated.View>
     </View>
   );
