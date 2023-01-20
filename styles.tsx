@@ -173,8 +173,21 @@ const styles = StyleSheet.create({
   },
   item: {
     flexDirection: 'column',
-    justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  itemleftcollapsed: {
+    fontSize: 16,
+    width: Dimensions.get('window').width * 0.2,
+    height: Dimensions.get('window').height * 0.06,
+    lineHeight: Dimensions.get('window').height * 0.06,
+    overflow: 'hidden',
+  },
+  itemleftexpanded: {
+    fontSize: 16,
+    width: Dimensions.get('window').width * 0.6,
+    height: Dimensions.get('window').height * 0.06,
+    lineHeight: Dimensions.get('window').height * 0.06,
+    overflow: 'hidden',
   },
   itemheader: {
     flexDirection: 'row',
@@ -182,19 +195,41 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: Dimensions.get('window').height * 0.06,
     width: Dimensions.get('window').width * 0.9,
-    marginHorizontal: 20,
+    marginHorizontal: 5,
   },
   itembody: {
     flexDirection: 'column',
     justifyContent: 'space-between',
   },
+  itemtextbanner: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    right: Dimensions.get('window').width * 0.1,
+    position: 'absolute',
+  },
+  itemtextexpandedbanner: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    position: 'absolute',
+    height: Dimensions.get('window').height * 0.1,
+    width: Dimensions.get('window').width * 0.22,
+    left: Dimensions.get('window').width * 0.01,
+  },
   itemtext: {
     fontSize: 16,
     color: 'rgb(73, 190, 255)',
-    position: 'absolute',
-    right: 20,
   },
-
+  itemtextexpanded: {
+    fontSize: 16,
+    color: 'rgb(73, 190, 255)',
+    lineHeight: Dimensions.get('window').height * 0.03,
+  },
+  verticaldevider: {
+    height: Dimensions.get('window').height * 0.03,
+    width: 1,
+    backgroundColor: 'rgb(73, 190, 255)',
+    marginHorizontal: 6,
+  },
   loading: {
     flex: 1,
     justifyContent: 'center',
@@ -203,10 +238,10 @@ const styles = StyleSheet.create({
 
   itembuttons: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     alignItems: 'center',
     height: Dimensions.get('window').height * 0.1,
-    marginHorizontal: 60,
+    marginRight: 20,
   },
   deleteButton: {
     height: Dimensions.get('window').height * 0.1,
@@ -216,6 +251,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     justifyContent: 'center',
     alignItems: 'center',
+    marginHorizontal: 10,
   },
   deleteButtonText: {
     color: 'black',

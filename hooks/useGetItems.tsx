@@ -36,5 +36,7 @@ export default function useGetItems() {
     setIsLoading(false);
   }, 500);
 
-  return { items, isLoading };
+  return useMemo(() => {
+    return { items, isLoading };
+  }, [items, isLoading]);
 }

@@ -1,35 +1,31 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { View, Text, Button, TouchableOpacity, Alert, Pressable } from 'react-native';
+import {
+  View,
+  Text,
+  Button,
+  TouchableOpacity,
+  Alert,
+  Pressable,
+} from 'react-native';
 import styles from '../styles';
 import { DaysLeft, useDeleteItem, useEditItem } from '../hooks';
 import { ItemProps } from '../types';
 import useCheckUserStatus from '../hooks/useCheckUserStatus';
 import { useFocusEffect } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import Animated, { useSharedValue, withTiming, useAnimatedStyle, Easing } from 'react-native-reanimated';
+import Animated, {
+  useSharedValue,
+  withTiming,
+  useAnimatedStyle,
+  Easing,
+} from 'react-native-reanimated';
 export const Item = ({ item }: ItemProps) => {
   const user = useCheckUserStatus();
   const [collapsed, setCollapsed] = useState(true);
-  const containerHeight = useSharedValue(0);
-
-  const toggleExpanded = () => {
-    if (collapsed) {
-      containerHeight.value = withTiming(50, { duration: 200, easing: Easing.bezier(0.25, 0.1, 0.25, 1) });
-    } else {
-      containerHeight.value = withTiming(0, { duration: 200, easing: Easing.bezier(0.25, 0.1, 0.25, 1) });
-    }
-    setCollapsed(!collapsed);
-  };
-
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      height: containerHeight.value,
-    };
-  });
 
   // delete item and prompt user to confirm
 
-  const promptDelete = () => {
+  const promptDelete = useCallback(() => {
     Alert.alert('Delete Item', 'Are you sure you want to delete this item?', [
       {
         text: 'Cancel',
@@ -37,29 +33,62 @@ export const Item = ({ item }: ItemProps) => {
       },
       { text: 'OK', onPress: useDeleteItem(item, user) },
     ]);
-  };
+  }, [item, user]);
 
   return (
     <View style={styles.item}>
-      <TouchableOpacity style={styles.itembody} onPress={toggleExpanded}>
+      <TouchableOpacity onPress={() => setCollapsed(!collapsed)}>
         <View style={styles.itemheader}>
-          <Text style={styles.itemname}>{item.name}</Text>
-          <Text style={styles.itemtext}>
-            {item.amount} {item.amountType} {DaysLeft(item.expiration)}
+          <Text
+            style={
+              collapsed ? styles.itemleftcollapsed : styles.itemleftexpanded
+            }
+          >
+            {item.name}
           </Text>
-          <MaterialCommunityIcons name={collapsed ? 'chevron-right' : 'chevron-down'} size={24} color="black" />
+          {collapsed && (
+            <View style={styles.itemtextbanner}>
+              <Text style={styles.itemtext}>
+                {item.amount} {item.amountType}
+              </Text>
+              <Text style={styles.verticaldevider}>|</Text>
+              <Text style={styles.itemtext}>{DaysLeft(item.expiration)}</Text>
+              <Text style={styles.verticaldevider}>|</Text>
+            </View>
+          )}
+          <MaterialCommunityIcons
+            name={collapsed ? 'chevron-down' : 'chevron-up'}
+            size={24}
+            color="black"
+          />
         </View>
+        {!collapsed && (
+          <View>
+            <View style={styles.itemtextexpandedbanner}>
+              <Text style={styles.itemtextexpanded}>
+                {item.amount} {item.amountType}
+              </Text>
+              <Text style={styles.itemtextexpanded}>
+                {DaysLeft(item.expiration)}
+              </Text>
+            </View>
+            <View style={styles.itembuttons}>
+              <Pressable style={styles.deleteButton} onPress={promptDelete}>
+                <MaterialCommunityIcons
+                  name="delete-forever"
+                  size={24}
+                  color="black"
+                />
+                <Text style={styles.deleteButtonText}>Delete</Text>
+              </Pressable>
+              <Pressable style={styles.deleteButton}>
+                <MaterialCommunityIcons name="pencil" size={24} color="black" />
+                <Text style={styles.deleteButtonText}>Edit</Text>
+              </Pressable>
+            </View>
+          </View>
+        )}
       </TouchableOpacity>
-      <Animated.View style={[styles.itembuttons, animatedStyle]}>
-        <Pressable style={styles.deleteButton} onPress={promptDelete}>
-          <MaterialCommunityIcons name="delete-forever" size={24} color="black" />
-          <Text style={styles.deleteButtonText}>Delete</Text>
-        </Pressable>
-        <Pressable style={styles.deleteButton}>
-          <MaterialCommunityIcons name="pencil" size={24} color="black" />
-          <Text style={styles.deleteButtonText}>Edit</Text>
-        </Pressable>
-      </Animated.View>
     </View>
   );
 };
