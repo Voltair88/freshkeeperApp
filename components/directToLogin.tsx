@@ -1,10 +1,8 @@
 import { Text, View } from '../components';
 import { Button } from 'react-native';
 import styles from '../styles';
-import useCheckUserStatus from '../hooks/useCheckUserStatus';
 
-export function DirectToLogin({ navigation }: any) {
-  const user = useCheckUserStatus();
+export function DirectToLogin({ navigation }: { navigation: any }): JSX.Element {
   const handleOnPress = () => {
     navigation.navigate('TabTwo');
   };

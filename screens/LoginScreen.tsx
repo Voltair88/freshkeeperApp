@@ -6,7 +6,7 @@ import styles from '../styles';
 import { Button } from 'react-native';
 import { Text, View, TextInput } from '../components';
 
-export function LoginScreen({ navigation }: RootTabScreenProps<'Login'>) {
+export function LoginScreen({ navigation }: RootTabScreenProps<'Login'>): JSX.Element {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [validationMessage, setValidationMessage] = React.useState('');

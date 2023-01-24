@@ -5,7 +5,7 @@ import { ScrollView } from 'react-native';
 import useCheckUserStatus from '../hooks/useCheckUserStatus';
 import useGetItems from '../hooks/useGetItems';
 
-export function TabTwoScreen({ navigation }: RootTabScreenProps<'TabTwo'>) {
+export function TabTwoScreen({ navigation }: RootTabScreenProps<'TabTwo'>): JSX.Element {
   const user = useCheckUserStatus();
   const { items, isLoading } = useGetItems();
 
@@ -32,9 +32,7 @@ export function TabTwoScreen({ navigation }: RootTabScreenProps<'TabTwo'>) {
             {isLoading ? (
               <Text>Loading...</Text>
             ) : (
-              items
-                .filter((item) => item.storage === storage.name)
-                .map((item) => <Item item={item} key={item.id} />)
+              items.filter((item) => item.storage === storage.name).map((item) => <Item item={item} key={item.id} />)
             )}
           </View>
         ))}
