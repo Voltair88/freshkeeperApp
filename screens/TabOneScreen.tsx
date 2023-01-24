@@ -12,6 +12,9 @@ import moment from 'moment';
 import useCheckUserStatus from '../hooks/useCheckUserStatus';
 import { DirectToLogin } from '../components';
 import { useSendItem } from '../hooks/useSendItem';
+import { Button, Snackbar } from 'react-native-paper';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
 /**
  *  In this screen you can add a new item to your storage.
  *
@@ -26,6 +29,7 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   const [expiration, setExpiration] = useState('');
   const [showDateWarning, setShowDateWarning] = useState(false);
   const [show, setShow] = useState(false);
+  const [visible, setVisible] = useState(false);
   const {
     reset,
     register,
@@ -34,6 +38,11 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
     formState: { errors, isSubmitSuccessful },
   } = useForm<Inputs>();
 
+  /**
+   * Reset states to empty
+   * @returns void
+   *
+   */
   const resetStates = () => {
     setName('');
     setAmount(0);
@@ -42,13 +51,18 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
     setExpiration('');
   };
 
+  // Refs for the pickers
   const amountTypeRef = useRef(null);
   const storageRef = useRef(null);
   const showDatepicker = () => {
     setShow(true);
   };
 
+  // Send item to firebase
+
   const sendItem = useSendItem();
+
+  // open amount type picker
 
   function open(amountTypeRef: any) {
     amountTypeRef.current.focus();
@@ -64,10 +78,15 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
     // Reset form fields to empty
   }, [register, reset, isSubmitSuccessful]);
 
+  /**
+   * submit form data
+   * @param data submit data
+   */
   const onSubmit: SubmitHandler<FormInputs> = (data) => {
     if (expiration === '') {
       setShowDateWarning(true);
     } else {
+      setVisible(true);
       sendItem.sendItem({
         ...data,
         id: uuidv4(),
@@ -100,229 +119,244 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   }
 
   return (
-    <ScrollView>
-      <View>
-        <Text style={styles.tabsubtitle}>choose your product, storage and expiration date.</Text>
-        <Text style={styles.devider} />
-        <View style={styles.flexrow}>
-          <Text style={styles.itemnumber}>1</Text>
-          <Text style={styles.itemname}>Add product name</Text>
-        </View>
-        <Controller
-          name="name"
-          control={control}
-          rules={{ required: true }}
-          render={({ field: { onChange, value } }) => (
-            <TextInput
-              placeholder="Enter product name"
-              textContentType="name"
-              style={styles.nameinput}
-              onChangeText={(value) => {
-                onChange(value);
-                setName(value);
-              }}
-              value={value}
-            />
-          )}
-        />
-        {errors.name && <Text style={styles.error}>Enter a name</Text>}
-        <Text style={styles.devider} />
-        <View style={styles.flexrow}>
-          <Text style={styles.itemnumber}>2</Text>
-          <Text style={styles.itemname}> Choose quantity</Text>
-        </View>
-        <View style={styles.flexrow}>
+    <View>
+      <ScrollView>
+        <View>
+          <Text style={styles.tabsubtitle}>choose your product, storage and expiration date.</Text>
+          <Text style={styles.devider} />
+          <View style={styles.flexrow}>
+            <Text style={styles.itemnumber}>1</Text>
+            <Text style={styles.itemname}>Add product name</Text>
+          </View>
           <Controller
-            name="amount"
+            name="name"
             control={control}
-            rules={{
-              required: true,
-              min: {
-                value: 1,
-                message: 'Enter an amount',
-              },
-            }}
+            rules={{ required: true }}
             render={({ field: { onChange, value } }) => (
-              <InputSpinner
-                type="real"
-                placeholder="0"
-                style={styles.numberinput}
-                rounded={true}
-                colorPress={'#49BEFF'}
-                precision={2}
-                max={100}
-                min={0}
-                step={1}
-                buttonStyle={{
-                  backgroundColor: 'white',
-                  borderColor: '#49BEFF',
-                  borderWidth: 2,
-                }}
-                inputStyle={{
-                  backgroundColor: 'white',
-                  borderColor: '#49BEFF',
-                  borderWidth: 2,
-                  borderRadius: 70 / 2,
-                  height: 70,
-                  width: 70,
-                }}
-                fontSize={40}
-                prepend={<View style={{ width: 30 }} />}
-                append={<View style={{ width: 30 }} />}
-                buttonTextColor="black"
-                value={value}
-                onChange={(value) => {
+              <TextInput
+                placeholder="Enter product name"
+                textContentType="name"
+                style={styles.nameinput}
+                onChangeText={(value) => {
                   onChange(value);
-                  setAmount(value as number);
+                  setName(value);
                 }}
+                value={value}
               />
             )}
           />
-          <View style={styles.picker}>
+          {errors.name && <Text style={styles.error}>Enter a name</Text>}
+          <Text style={styles.devider} />
+          <View style={styles.flexrow}>
+            <Text style={styles.itemnumber}>2</Text>
+            <Text style={styles.itemname}> Choose quantity</Text>
+          </View>
+          <View style={styles.flexrow}>
             <Controller
-              name="amountType"
+              name="amount"
               control={control}
               rules={{
                 required: true,
+                min: {
+                  value: 1,
+                  message: 'Enter an amount',
+                },
               }}
-              render={({ field: { onChange } }) => (
-                <TouchableOpacity
-                  style={{
-                    height: 48,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                  onPress={() => {
-                    open(amountTypeRef);
-                  }}
-                >
-                  <Picker
-                    ref={amountTypeRef}
-                    selectedValue={amountType}
-                    style={{ display: 'none', opacity: 0, height: 0, width: 0 }}
-                    onValueChange={(value) => {
-                      onChange(value);
-                      setAmountType(value);
-                    }}
-                  >
-                    <Picker.Item label="Options" enabled={false} />
-                    <Picker.Item label="L" value="L" />
-                    <Picker.Item label="ml" value="ml" />
-                    <Picker.Item label="Kg" value="Kg" />
-                    <Picker.Item label="g" value="g" />
-                    <Picker.Item label="pcs" value="pcs" />
-                  </Picker>
-                </TouchableOpacity>
-              )}
-            />
-            <View style={styles.amountTypeLabelContainer} pointerEvents="none">
-              <Text style={styles.amountTypeLabel}>{amountType}</Text>
-            </View>
-          </View>
-        </View>
-        {errors.amount && <Text style={styles.error}>{errors.amount.message}</Text>}
-        {errors.amountType && <Text style={styles.error}>Enter a amount type</Text>}
-        <Text style={styles.devider} />
-        <View style={styles.flexrow}>
-          <Text style={styles.itemnumber}>4</Text>
-          <Text style={styles.itemname}> Choose storage</Text>
-        </View>
-        <View style={styles.storage}>
-          <Controller
-            name="storage"
-            control={control}
-            rules={{
-              required: true,
-            }}
-            render={({ field: { onChange, value } }) => (
-              <TouchableOpacity
-                style={styles.storageinput}
-                onPress={() => {
-                  open(storageRef);
-                }}
-              >
-                <Text style={styles.amountTypeLabel}>{storage ? storage : 'Choose storage'}</Text>
-                <Picker
-                  ref={storageRef}
-                  selectedValue={storage}
-                  style={{ display: 'none', opacity: 0, height: 0, width: 0 }}
-                  onValueChange={(value, itemIndex) => {
-                    onChange(value);
-                    setStorage(value);
-                  }}
-                >
-                  <Picker.Item label="Options" enabled={false} />
-                  <Picker.Item label="Fridge" value="Fridge" />
-                  <Picker.Item label="Freezer" value="Freezer" />
-                  <Picker.Item label="Pantry" value="Pantry" />
-                  <Picker.Item label="Other" value="Other" />
-                </Picker>
-              </TouchableOpacity>
-            )}
-          />
-        </View>
-        {errors.storage && <Text style={styles.error}>Enter a storage</Text>}
-        <Text style={styles.devider} />
-        <View style={styles.flexrow}>
-          <Text style={styles.itemnumber}>3</Text>
-          <Text style={styles.itemname}> Choose expiration date</Text>
-        </View>
-        <View>
-          <TouchableOpacity style={styles.dateinput} onPress={showDatepicker}>
-            <Text style={styles.datetext}>{expiration ? moment(expiration).format('DD/MM/YYYY') : 'Choose date'}</Text>
-          </TouchableOpacity>
-          {show && (
-            <Controller
-              name="expiration"
-              control={control}
-              rules={{ required: true }}
               render={({ field: { onChange, value } }) => (
-                <RNDateTimePicker
-                  testID="dateTimePicker"
-                  value={value ? new Date(value) : new Date()}
-                  mode={'date'}
-                  minimumDate={new Date()}
-                  is24Hour={true}
-                  display="default"
-                  onChange={(event, selectedDate) => {
-                    const currentDate = selectedDate as Date;
-                    setShow(Platform.OS === 'ios');
-                    onChange(currentDate.toISOString());
-                    setExpiration(currentDate.toISOString());
+                <InputSpinner
+                  type="real"
+                  placeholder="0"
+                  style={styles.numberinput}
+                  rounded={true}
+                  colorPress={'#49BEFF'}
+                  precision={2}
+                  max={100}
+                  min={0}
+                  step={1}
+                  buttonStyle={{
+                    backgroundColor: 'white',
+                    borderColor: '#49BEFF',
+                    borderWidth: 2,
+                  }}
+                  inputStyle={{
+                    backgroundColor: 'white',
+                    borderColor: '#49BEFF',
+                    borderWidth: 2,
+                    borderRadius: 70 / 2,
+                    height: 70,
+                    width: 70,
+                  }}
+                  fontSize={40}
+                  prepend={<View style={{ width: 30 }} />}
+                  append={<View style={{ width: 30 }} />}
+                  buttonTextColor="black"
+                  value={value}
+                  onChange={(value) => {
+                    onChange(value);
+                    setAmount(value as number);
                   }}
                 />
               )}
             />
-          )}
-        </View>
-        {errors.expiration && <Text style={styles.error}>{errors.expiration.message}</Text>}
-        {showDateWarningText()}
-        <Text style={styles.devider} />
-        <View>
-          <View style={styles.summary}>
-            <View>
-              <Text style={styles.summarytext}>Product</Text>
-              <Text style={styles.summarysubtext}>{name}</Text>
-            </View>
-            <View>
-              <Text style={styles.summarytext}>Quantity</Text>
-              <Text style={styles.summarysubtext}>{amount === 0 ? '' : amount + ' ' + amountType} </Text>
-            </View>
-            <View>
-              <Text style={styles.summarytext}>Storage</Text>
-              <Text style={styles.summarysubtext}>{storage}</Text>
-            </View>
-            <View>
-              <Text style={styles.summarytext}>Expiration date</Text>
-              <Text style={styles.summarysubtext}>{expiration ? daysLeftSummary(expiration) + ' days left' : ''}</Text>
+            <View style={styles.picker}>
+              <Controller
+                name="amountType"
+                control={control}
+                rules={{
+                  required: true,
+                }}
+                render={({ field: { onChange } }) => (
+                  <TouchableOpacity
+                    style={{
+                      height: 48,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                    onPress={() => {
+                      open(amountTypeRef);
+                    }}
+                  >
+                    <Picker
+                      ref={amountTypeRef}
+                      selectedValue={amountType}
+                      style={{ display: 'none', opacity: 0, height: 0, width: 0 }}
+                      onValueChange={(value) => {
+                        onChange(value);
+                        setAmountType(value);
+                      }}
+                    >
+                      <Picker.Item label="Options" enabled={false} />
+                      <Picker.Item label="L" value="L" />
+                      <Picker.Item label="ml" value="ml" />
+                      <Picker.Item label="Kg" value="Kg" />
+                      <Picker.Item label="g" value="g" />
+                      <Picker.Item label="pcs" value="pcs" />
+                    </Picker>
+                  </TouchableOpacity>
+                )}
+              />
+              <View style={styles.amountTypeLabelContainer} pointerEvents="none">
+                <Text style={styles.amountTypeLabel}>{amountType}</Text>
+              </View>
             </View>
           </View>
+          {errors.amount && <Text style={styles.error}>{errors.amount.message}</Text>}
+          {errors.amountType && <Text style={styles.error}>Enter a amount type</Text>}
+          <Text style={styles.devider} />
+          <View style={styles.flexrow}>
+            <Text style={styles.itemnumber}>4</Text>
+            <Text style={styles.itemname}> Choose storage</Text>
+          </View>
+          <View style={styles.storage}>
+            <Controller
+              name="storage"
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({ field: { onChange, value } }) => (
+                <TouchableOpacity
+                  style={styles.storageinput}
+                  onPress={() => {
+                    open(storageRef);
+                  }}
+                >
+                  <Text style={styles.amountTypeLabel}>{storage ? storage : 'Choose storage'}</Text>
+                  <Picker
+                    ref={storageRef}
+                    selectedValue={storage}
+                    style={{ display: 'none', opacity: 0, height: 0, width: 0 }}
+                    onValueChange={(value, itemIndex) => {
+                      onChange(value);
+                      setStorage(value);
+                    }}
+                  >
+                    <Picker.Item label="Options" enabled={false} />
+                    <Picker.Item label="Fridge" value="Fridge" />
+                    <Picker.Item label="Freezer" value="Freezer" />
+                    <Picker.Item label="Pantry" value="Pantry" />
+                    <Picker.Item label="Other" value="Other" />
+                  </Picker>
+                </TouchableOpacity>
+              )}
+            />
+          </View>
+          {errors.storage && <Text style={styles.error}>Enter a storage</Text>}
+          <Text style={styles.devider} />
+          <View style={styles.flexrow}>
+            <Text style={styles.itemnumber}>3</Text>
+            <Text style={styles.itemname}> Choose expiration date</Text>
+          </View>
+          <View>
+            <TouchableOpacity style={styles.dateinput} onPress={showDatepicker}>
+              <Text style={styles.datetext}>
+                {expiration ? moment(expiration).format('DD/MM/YYYY') : 'Choose date'}
+              </Text>
+            </TouchableOpacity>
+            {show && (
+              <Controller
+                name="expiration"
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { onChange, value } }) => (
+                  <RNDateTimePicker
+                    testID="dateTimePicker"
+                    value={value ? new Date(value) : new Date()}
+                    mode={'date'}
+                    minimumDate={new Date()}
+                    is24Hour={true}
+                    display="default"
+                    onChange={(event, selectedDate) => {
+                      const currentDate = selectedDate as Date;
+                      setShow(Platform.OS === 'ios');
+                      onChange(currentDate.toISOString());
+                      setExpiration(currentDate.toISOString());
+                    }}
+                  />
+                )}
+              />
+            )}
+          </View>
+          {errors.expiration && <Text style={styles.error}>{errors.expiration.message}</Text>}
+          {showDateWarningText()}
+          <Text style={styles.devider} />
+          <View>
+            <View style={styles.summary}>
+              <View>
+                <Text style={styles.summarytext}>Product</Text>
+                <Text style={styles.summarysubtext}>{name}</Text>
+              </View>
+              <View>
+                <Text style={styles.summarytext}>Quantity</Text>
+                <Text style={styles.summarysubtext}>{amount === 0 ? '' : amount + ' ' + amountType} </Text>
+              </View>
+              <View>
+                <Text style={styles.summarytext}>Storage</Text>
+                <Text style={styles.summarysubtext}>{storage}</Text>
+              </View>
+              <View>
+                <Text style={styles.summarytext}>Expiration date</Text>
+                <Text style={styles.summarysubtext}>
+                  {expiration ? daysLeftSummary(expiration) + ' days left' : ''}
+                </Text>
+              </View>
+            </View>
+          </View>
+          <View style={styles.devider} />
+          <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
+            <Text style={styles.buttonText}>Confirm</Text>
+          </TouchableOpacity>
         </View>
-        <View style={styles.devider} />
-        <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
-          <Text style={styles.buttonText}>Confirm</Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+      </ScrollView>
+      <Snackbar
+        style={styles.snackbar}
+        visible={visible}
+        duration={3000}
+        onDismiss={() => setVisible(false)}
+        action={{ label: 'Ok', buttonColor: '#e4e4e4', textColor: 'black', onPress: () => setVisible(false) }}
+      >
+        <Text style={styles.snackbartext}>Item added to your Storage</Text>
+      </Snackbar>
+    </View>
   );
 }

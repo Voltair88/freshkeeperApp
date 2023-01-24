@@ -19,7 +19,7 @@ export function LoginScreen({ navigation }: RootTabScreenProps<'Login'>) {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       setValidationMessage('Login successful');
-      navigation.navigate('Account');
+      navigation.navigate('TabTwo');
     } catch (error: any) {
       if (error.code === 'auth/user-not-found') {
         setValidationMessage('No user found with that email');
@@ -54,9 +54,17 @@ export function LoginScreen({ navigation }: RootTabScreenProps<'Login'>) {
         value={password}
         secureTextEntry
       />
-      {loading ? <Button title="Loading..." disabled /> : <Button title="Login" onPress={handleLogin} />}
+      {loading ? (
+        <Button title="Loading..." disabled />
+      ) : (
+        <Button title="Login" onPress={handleLogin} />
+      )}
       <Text>{validationMessage}</Text>
-      <Text style={styles.devider} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+      <Text
+        style={styles.devider}
+        lightColor="#eee"
+        darkColor="rgba(255,255,255,0.1)"
+      />
       <Text style={styles.tabsubtitle}>Don't have an account?</Text>
       <Button title=" Sign up" onPress={handleSignup} />
     </View>

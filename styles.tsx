@@ -148,6 +148,17 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: 'rgb(73, 190, 255)',
   },
+  snackbar: {
+    color: 'white',
+    fontSize: 16,
+    backgroundColor: 'rgb(73, 190, 255)',
+    borderColor: 'rgb(67, 129, 162)',
+    borderWidth: 1,
+  },
+  snackbartext: {
+    color: 'white',
+    fontSize: 16,
+  },
 
   // Storage Tab
 

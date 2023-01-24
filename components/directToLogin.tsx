@@ -6,7 +6,7 @@ import useCheckUserStatus from '../hooks/useCheckUserStatus';
 export function DirectToLogin({ navigation }: any) {
   const user = useCheckUserStatus();
   const handleOnPress = () => {
-    navigation.navigate('Login');
+    navigation.navigate('TabTwo');
   };
   return (
     <View style={styles.container}>
