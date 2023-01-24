@@ -5,14 +5,12 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import styles from '../styles';
 import { Button } from 'react-native';
 import { Text, View, TextInput } from '../components';
-import useCheckUserStatus from '../hooks/useCheckUserStatus';
 
 export function LoginScreen({ navigation }: RootTabScreenProps<'Login'>) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [validationMessage, setValidationMessage] = React.useState('');
   const [loading, setLoading] = React.useState(false);
-  const user = useCheckUserStatus();
 
   const handleLogin = async () => {
     setLoading(true);
@@ -54,18 +52,10 @@ export function LoginScreen({ navigation }: RootTabScreenProps<'Login'>) {
         value={password}
         secureTextEntry
       />
-      {loading ? (
-        <Button title="Loading..." disabled />
-      ) : (
-        <Button title="Login" onPress={handleLogin} />
-      )}
+      {loading ? <Button title="Loading..." disabled /> : <Button title="Login" onPress={handleLogin} />}
       <Text>{validationMessage}</Text>
-      <Text
-        style={styles.devider}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
-      <Text style={styles.tabsubtitle}>Don't have an account?</Text>
+      <Text style={styles.devider} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+      <Text style={styles.tabsubtitle}>Don&apos;t have an account?</Text>
       <Button title=" Sign up" onPress={handleSignup} />
     </View>
   );

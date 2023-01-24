@@ -1,6 +1,6 @@
-import { Text, View } from '../components/Themed';
+import { View } from '../components/Themed';
 import styles from '../styles';
 
-export function TabThreeScreen() {
+export function TabThreeScreen(): JSX.Element {
   return <View style={styles.container}></View>;
 }

@@ -6,7 +6,6 @@ import { auth } from '../firebase';
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import styles from '../styles';
 import { RootTabScreenProps } from '../types';
-import useCheckUserStatus from '../hooks/useCheckUserStatus';
 
 export function ModalScreen({ navigation }: RootTabScreenProps<'Signup'>) {
   const [email, setEmail] = React.useState('');
@@ -14,8 +13,6 @@ export function ModalScreen({ navigation }: RootTabScreenProps<'Signup'>) {
   const [confirmPassword, setConfirmPassword] = React.useState('');
   const [validationMessage, setValidationMessage] = React.useState('');
   const [loading, setLoading] = React.useState(false);
-  const user = useCheckUserStatus();
-
   const handleSignup = async () => {
     if (password !== confirmPassword) {
       setValidationMessage('Passwords do not match');

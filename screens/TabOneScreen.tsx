@@ -12,8 +12,7 @@ import moment from 'moment';
 import useCheckUserStatus from '../hooks/useCheckUserStatus';
 import { DirectToLogin } from '../components';
 import { useSendItem } from '../hooks/useSendItem';
-import { Button, Snackbar } from 'react-native-paper';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Snackbar } from 'react-native-paper';
 
 /**
  *  In this screen you can add a new item to your storage.
@@ -102,7 +101,7 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
     if (showDateWarning) {
       return <Text style={styles.error}>Enter an expiration date</Text>;
     } else {
-      null;
+      return null;
     }
   }
 
@@ -254,7 +253,7 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
               rules={{
                 required: true,
               }}
-              render={({ field: { onChange, value } }) => (
+              render={({ field: { onChange } }) => (
                 <TouchableOpacity
                   style={styles.storageinput}
                   onPress={() => {
@@ -266,7 +265,7 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
                     ref={storageRef}
                     selectedValue={storage}
                     style={{ display: 'none', opacity: 0, height: 0, width: 0 }}
-                    onValueChange={(value, itemIndex) => {
+                    onValueChange={(value) => {
                       onChange(value);
                       setStorage(value);
                     }}
@@ -306,8 +305,8 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
                     minimumDate={new Date()}
                     is24Hour={true}
                     display="default"
-                    onChange={(event, selectedDate) => {
-                      const currentDate = selectedDate as Date;
+                    onChange={(selectedDate) => {
+                      const currentDate = selectedDate as unknown as Date;
                       setShow(Platform.OS === 'ios');
                       onChange(currentDate.toISOString());
                       setExpiration(currentDate.toISOString());
