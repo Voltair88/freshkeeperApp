@@ -13,7 +13,6 @@ import useCheckUserStatus from '../hooks/useCheckUserStatus';
 import { DirectToLogin } from '../components';
 import { useSendItem } from '../hooks/useSendItem';
 import { Snackbar } from 'react-native-paper';
-import { DaysLeft } from 'hooks';
 /**
  *  In this screen you can add a new item to your storage.
  *

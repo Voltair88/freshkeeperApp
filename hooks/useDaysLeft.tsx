@@ -2,6 +2,7 @@ import React from 'react';
 import styles from '../styles';
 import { Text } from '../components/Themed';
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const DaysLeft = (date: string) => {
   const expirationdate = new Date(date);
   const todaysdate = new Date();
@@ -35,5 +36,7 @@ export const DaysLeft = (date: string) => {
         {diffMonths} {diffMonths === 1 ? 'month' : 'months'} left
       </Text>
     );
+  } else {
+    return <Text style={styles.itemtext}>Never expires</Text>;
   }
 };
