@@ -13,7 +13,7 @@ import useCheckUserStatus from '../hooks/useCheckUserStatus';
 import { DirectToLogin } from '../components';
 import { useSendItem } from '../hooks/useSendItem';
 import { Snackbar } from 'react-native-paper';
-
+import { DaysLeft } from 'hooks';
 /**
  *  In this screen you can add a new item to your storage.
  *
@@ -108,12 +108,43 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>): JSX.
     }
   }
 
+  // eslint-disable-next-line no-unused-vars
+  function datePicker(value: string, onChange: (...event: any[]) => void) {
+    return (
+      <RNDateTimePicker
+        testID="dateTimePicker"
+        value={value ? new Date(value) : new Date()}
+        mode={'date'}
+        minimumDate={new Date()}
+        is24Hour={true}
+        display="default"
+        onChange={(_event, selectedDate) => {
+          const currentDate = selectedDate as Date;
+          setShow(Platform.OS === 'ios');
+          onChange(currentDate.toISOString());
+          setExpiration(currentDate.toISOString());
+        }}
+      />
+    );
+  }
+
   function daysLeftSummary(expirationDate: string): number {
     const expiration = new Date(expirationDate);
     const today = new Date();
     const diff = Math.abs(today.getTime() - expiration.getTime());
     const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
     return days;
+  }
+
+  function daysLeftText(expirationDate: string): string {
+    const daysLeft = daysLeftSummary(expirationDate);
+    if (daysLeft < 0) {
+      return 'Today';
+    } else if (daysLeft === 1) {
+      return 'Tomorrow';
+    } else {
+      return `${daysLeft} days left`;
+    }
   }
 
   if (!user) {
@@ -300,22 +331,7 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>): JSX.
                 name="expiration"
                 control={control}
                 rules={{ required: true }}
-                render={({ field: { onChange, value } }) => (
-                  <RNDateTimePicker
-                    testID="dateTimePicker"
-                    value={value ? new Date(value) : new Date()}
-                    mode={'date'}
-                    minimumDate={new Date()}
-                    is24Hour={true}
-                    display="default"
-                    onChange={(selectedDate) => {
-                      const currentDate = selectedDate as unknown as Date;
-                      setShow(Platform.OS === 'ios');
-                      onChange(currentDate.toISOString());
-                      setExpiration(currentDate.toISOString());
-                    }}
-                  />
-                )}
+                render={({ field: { onChange, value } }) => datePicker(value, onChange)}
               />
             )}
           </View>
@@ -338,9 +354,7 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>): JSX.
               </View>
               <View>
                 <Text style={styles.summarytext}>Expiration date</Text>
-                <Text style={styles.summarysubtext}>
-                  {expiration ? daysLeftSummary(expiration) + ' days left' : ''}
-                </Text>
+                <Text style={styles.summarysubtext}>{daysLeftText(expiration)}</Text>
               </View>
             </View>
           </View>

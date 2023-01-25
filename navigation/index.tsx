@@ -1,8 +1,3 @@
-/**
- * If you are not familiar with React Navigation, refer to the "Fundamentals" guide:
- * https://reactnavigation.org/docs/getting-started
- *
- */
 import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme, DarkTheme, useIsFocused } from '@react-navigation/native';
@@ -32,10 +27,6 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
   );
 }
 
-/**
- * A root stack navigator is often used for displaying modals on top of all other content.
- * https://reactnavigation.org/docs/modal
- */
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
@@ -72,15 +63,12 @@ function RootNavigator() {
   );
 }
 
-/**
- * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
- * https://reactnavigation.org/docs/bottom-tab-navigator
- */
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
   const colorScheme = useColorScheme();
-
+  // the size of the icons
+  const size = Dimensions.get('window').width * 0.08;
   return (
     <BottomTab.Navigator
       initialRouteName="TabOne"
@@ -102,9 +90,9 @@ function BottomTabNavigator() {
           },
           tabBarIcon: ({ color }) =>
             useIsFocused() ? (
-              <MaterialCommunityIcons name="cart" color={color} />
+              <MaterialCommunityIcons name="cart" color={color} size={size} />
             ) : (
-              <MaterialCommunityIcons name="cart-outline" color={'white'} />
+              <MaterialCommunityIcons name="cart-outline" color={'white'} size={size} />
             ),
           headerRight: () =>
             auth.currentUser ? (
@@ -116,7 +104,7 @@ function BottomTabNavigator() {
               >
                 <FontAwesome5
                   name="user-circle"
-                  size={25}
+                  size={size}
                   color={Colors[colorScheme].text}
                   style={{ marginRight: 15 }}
                 />
@@ -128,7 +116,7 @@ function BottomTabNavigator() {
               >
                 <FontAwesome5
                   name="user-circle"
-                  size={25}
+                  size={size}
                   color={Colors[colorScheme].text}
                   style={{ marginRight: 15 }}
                 />
@@ -147,9 +135,9 @@ function BottomTabNavigator() {
           },
           tabBarIcon: ({ color }) =>
             useIsFocused() ? (
-              <MaterialCommunityIcons name="fridge" color={color} />
+              <MaterialCommunityIcons name="fridge" color={color} size={size} />
             ) : (
-              <MaterialCommunityIcons name="fridge-outline" color={'white'} />
+              <MaterialCommunityIcons name="fridge-outline" color={'white'} size={size} />
             ),
           headerRight: () =>
             auth.currentUser ? (
@@ -161,7 +149,7 @@ function BottomTabNavigator() {
               >
                 <FontAwesome5
                   name="user-circle"
-                  size={25}
+                  size={size}
                   color={Colors[colorScheme].text}
                   style={{ marginRight: 15 }}
                 />
@@ -173,7 +161,7 @@ function BottomTabNavigator() {
               >
                 <FontAwesome5
                   name="user-circle"
-                  size={25}
+                  size={size}
                   color={Colors[colorScheme].text}
                   style={{ marginRight: 15 }}
                 />
@@ -192,9 +180,9 @@ function BottomTabNavigator() {
           },
           tabBarIcon: ({ color }) =>
             useIsFocused() ? (
-              <MaterialCommunityIcons name="food" color={color} />
+              <MaterialCommunityIcons name="food" color={color} size={size} />
             ) : (
-              <MaterialCommunityIcons name="food-outline" color={'white'} />
+              <MaterialCommunityIcons name="food-outline" color={'white'} size={size} />
             ),
           headerRight: () =>
             auth.currentUser ? (
@@ -206,7 +194,7 @@ function BottomTabNavigator() {
               >
                 <FontAwesome5
                   name="user-circle"
-                  size={25}
+                  size={size}
                   color={Colors[colorScheme].text}
                   style={{ marginRight: 15 }}
                 />
@@ -218,7 +206,7 @@ function BottomTabNavigator() {
               >
                 <FontAwesome5
                   name="user-circle"
-                  size={25}
+                  size={size}
                   color={Colors[colorScheme].text}
                   style={{ marginRight: 15 }}
                 />
