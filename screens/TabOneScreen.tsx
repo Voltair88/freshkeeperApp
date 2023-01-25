@@ -18,8 +18,11 @@ import { Snackbar } from 'react-native-paper';
  *  In this screen you can add a new item to your storage.
  *
  *  choose your products name, quantity, storage and expiration date.
+ * TODO: Add a picture of the product
+ * TODO: Add a barcode scanner
+ * TODO: fix the date picker
  */
-export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
+export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>): JSX.Element {
   const user = useCheckUserStatus();
   const [name, setName] = useState('');
   const [amount, setAmount] = useState(0);

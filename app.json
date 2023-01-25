@@ -4,13 +4,13 @@
     "slug": "freshkeeperApp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/Freshkeeper.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#0B4A69"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -23,12 +23,18 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+        "foregroundImage": "./assets/images/Freshkeeper.png",
+        "backgroundColor": "#0B4A69"
+      },
+      "package": "com.voltair88.freshkeeperApp"
     },
     "web": {
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/Freshkeeper.webp"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "2c3ae72f-1f26-486b-86f3-d6aa0f4fdb5f"
+      }
     }
   }
 }

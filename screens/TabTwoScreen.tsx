@@ -5,6 +5,11 @@ import { ScrollView } from 'react-native';
 import useCheckUserStatus from '../hooks/useCheckUserStatus';
 import useGetItems from '../hooks/useGetItems';
 
+/**
+ * This is the second tab of the app. It shows the items of the user.
+ *
+ * TODO: Add a way to edit the items
+ */
 export function TabTwoScreen({ navigation }: RootTabScreenProps<'TabTwo'>): JSX.Element {
   const user = useCheckUserStatus();
   const { items, isLoading } = useGetItems();
