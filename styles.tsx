@@ -268,6 +268,36 @@ const styles = StyleSheet.create({
     color: 'black',
   },
 
+  // Recipe Tab
+
+  recipeContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  recipeLabel: {
+    height: Dimensions.get('window').height * 0.06,
+    lineHeight: Dimensions.get('window').height * 0.06,
+    fontSize: Dimensions.get('window').width * 0.07,
+    textAlign: 'left',
+    justifyContent: 'center',
+    marginVertical: 10,
+    paddingLeft: 10,
+  },
+  recipeItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    height: Dimensions.get('window').height * 0.06,
+    width: Dimensions.get('window').width * 0.9,
+    marginHorizontal: 5,
+  },
+
+  recipedevider: {
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.light.tint,
+    height: Dimensions.get('window').height * 0.01,
+    margin: 20,
+  },
   // Account
 
   // Login
