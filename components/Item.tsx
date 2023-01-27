@@ -1,5 +1,5 @@
-import { useState, useCallback } from 'react';
-import { View, Text, TouchableOpacity, Alert, Pressable, Dimensions } from 'react-native';
+import { useState, useCallback, useRef } from 'react';
+import { View, Text, TouchableOpacity, Alert, Pressable, Dimensions, Animated, Button } from 'react-native';
 import styles from '../styles';
 import { DaysLeft, useDeleteItem } from '../hooks';
 import { ItemProps } from '../types';
@@ -9,6 +9,19 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 export const Item = ({ item }: ItemProps): JSX.Element => {
   const user = useCheckUserStatus();
   const [collapsed, setCollapsed] = useState(true);
+  const expandAnimation = useRef(new Animated.Value(0)).current;
+
+  const toggleExpand = useCallback(
+    (collapsed: boolean) => {
+      setCollapsed(!collapsed);
+      Animated.timing(expandAnimation, {
+        toValue: collapsed ? 1 : 0,
+        duration: 500,
+        useNativeDriver: false,
+      }).start();
+    },
+    [collapsed, expandAnimation]
+  );
 
   // delete item and prompt user to confirm
 
@@ -24,7 +37,7 @@ export const Item = ({ item }: ItemProps): JSX.Element => {
 
   return (
     <View style={styles.item}>
-      <TouchableOpacity onPress={() => setCollapsed(!collapsed)}>
+      <TouchableOpacity onPress={() => toggleExpand(collapsed)}>
         <View style={styles.itemheader}>
           <Text style={collapsed ? styles.itemleftcollapsed : styles.itemleftexpanded}>{item.name}</Text>
           {collapsed && (
@@ -39,7 +52,12 @@ export const Item = ({ item }: ItemProps): JSX.Element => {
           )}
           <MaterialCommunityIcons name={collapsed ? 'chevron-down' : 'chevron-up'} size={24} color="black" />
         </View>
-        {!collapsed && (
+        <Animated.View
+          style={{
+            height: expandAnimation.interpolate({ inputRange: [0, 1], outputRange: [0, 100] }),
+            overflow: 'hidden',
+          }}
+        >
           <View>
             <View style={styles.itemtextexpandedbanner}>
               <Text style={styles.itemtextexpanded}>
@@ -62,7 +80,7 @@ export const Item = ({ item }: ItemProps): JSX.Element => {
               </Pressable>
             </View>
           </View>
-        )}
+        </Animated.View>
       </TouchableOpacity>
     </View>
   );

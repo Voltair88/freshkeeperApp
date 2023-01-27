@@ -1,22 +1,27 @@
-import { useCallback, useEffect, useState } from 'react';
-import { TextInput, View, Text } from '../components/Themed';
+import { useCallback, useState } from 'react';
+import { TextInput, View, Text, DirectToLogin } from '../components';
 import styles from '../styles';
 import { debounce } from 'lodash';
-import { Button, Dimensions, FlatList, Image } from 'react-native';
+import { Button, FlatList, Image } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import useCheckUserStatus from '../hooks/useCheckUserStatus';
+import { RootTabScreenProps } from '../types';
+
 /**
- * This is the third tab of the app. It will show some recipes and stuff.
+ * This is the third tab of the app. It shows some recipes and stuff.
  *
- * TODO: Add this tab
  *
  */
 
-export function TabThreeScreen(): JSX.Element {
+export function TabThreeScreen({ navigation }: RootTabScreenProps<'TabThree'>): JSX.Element {
+  const user = useCheckUserStatus();
   const [food, setFood] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [recipes, setRecipes] = useState([]);
-  const user = useCheckUserStatus();
+
+  if (!user) {
+    return <DirectToLogin navigation={navigation} />;
+  }
 
   useFocusEffect(
     useCallback(() => {

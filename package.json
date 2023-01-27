@@ -8,7 +8,8 @@
     "ios": "expo start --ios",
     "web": "NODE_OPTIONS=--openssl-legacy-provider expo start --web",
     "test": "jest",
-    "eslint": "eslint --ignore-path .eslintignore --ext .js,.jsx,.ts,.tsx"
+    "eslint": "eslint --ignore-path .eslintignore --ext .js,.jsx,.ts,.tsx",
+    "build": "eas build -p android --profile preview"
   },
   "android": {
     "package": "com.freshkeeperapp.app"

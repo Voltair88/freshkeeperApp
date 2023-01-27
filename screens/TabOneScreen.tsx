@@ -128,6 +128,9 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>): JSX.
   }
 
   function daysLeftSummary(expirationDate: string): number {
+    if (expirationDate === '') {
+      return 0;
+    }
     const expiration = new Date(expirationDate);
     const today = new Date();
     const diff = Math.abs(today.getTime() - expiration.getTime());
@@ -137,8 +140,8 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>): JSX.
 
   function daysLeftText(expirationDate: string): string {
     const daysLeft = daysLeftSummary(expirationDate);
-    if (daysLeft < 0) {
-      return 'Today';
+    if (daysLeft === 0) {
+      return '';
     } else if (daysLeft === 1) {
       return 'Tomorrow';
     } else {

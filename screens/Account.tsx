@@ -12,13 +12,16 @@ export function AccountScreen(props: any) {
     await auth.signOut();
     props.navigation.navigate('Login');
   };
-
-  return (
-    <View style={styles.container}>
-      <Text style={styles.tabsubtitle}>You are logged in</Text>
-      <Text style={styles.tabsubtitle}>{user?.email}</Text>
-      <Text style={styles.tabsubtitle}>{user?.uid}</Text>
-      <Button title="Logout" onPress={handleSignout} />
-    </View>
-  );
+  if (!user) {
+    return <Text style={styles.tabsubtitle}>You are not logged in</Text>;
+  } else {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.tabsubtitle}>You are logged in</Text>
+        <Text style={styles.tabsubtitle}>{user?.email}</Text>
+        <Text style={styles.tabsubtitle}>{user?.uid}</Text>
+        <Button title="Logout" onPress={handleSignout} />
+      </View>
+    );
+  }
 }

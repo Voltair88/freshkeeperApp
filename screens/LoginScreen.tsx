@@ -17,7 +17,7 @@ export function LoginScreen({ navigation }: RootTabScreenProps<'Login'>): JSX.El
     try {
       await signInWithEmailAndPassword(auth, email, password);
       setValidationMessage('Login successful');
-      navigation.navigate('TabTwo');
+      navigation.navigate('TabOne');
     } catch (error: any) {
       if (error.code === 'auth/user-not-found') {
         setValidationMessage('No user found with that email');
