@@ -2,11 +2,11 @@ import { Text, View } from '../components';
 import { Button } from 'react-native';
 import styles from '../styles';
 
-type props = {
+type DirectToLoginProps = {
   navigation: any;
 };
 
-export function DirectToLogin(props: props): JSX.Element {
+export function DirectToLogin(props: DirectToLoginProps): JSX.Element {
   const handleOnPress = () => {
     props.navigation.navigate('Signup');
   };

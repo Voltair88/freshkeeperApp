@@ -5,7 +5,11 @@ import { Text, View } from '../components/Themed';
 import { Button } from 'react-native';
 import useCheckUserStatus from '../hooks/useCheckUserStatus';
 
-export function AccountScreen(props: any) {
+type AccountScreenProps = {
+  navigation: any;
+};
+
+export function AccountScreen(props: AccountScreenProps): JSX.Element {
   const user = useCheckUserStatus();
 
   const handleSignout = async () => {
