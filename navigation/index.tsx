@@ -18,7 +18,7 @@ import {
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 import { auth } from '../firebase';
-
+import useCheckUserStatus from '../hooks/useCheckUserStatus';
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }): JSX.Element {
   return (
     <NavigationContainer linking={LinkingConfiguration} theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
@@ -30,35 +30,42 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
+  const user = useCheckUserStatus();
   return (
     <Stack.Navigator>
-      <Stack.Screen
-        name="Freshkeeper"
-        component={BottomTabNavigator}
-        options={{
-          header() {
-            return (
-              <View
-                style={{
-                  backgroundColor: '#0e4462',
-                  height: 70,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  paddingTop: 20,
-                }}
-              >
-                <Text style={{ fontFamily: 'pacifico-regular', fontSize: 20, color: 'white' }}>Freshkeeper</Text>
-              </View>
-            );
-          },
-        }}
-      />
-      <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-      <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="Signup" component={ModalScreen} />
+      {user ? (
+        <>
+          <Stack.Screen
+            name="Freshkeeper"
+            component={BottomTabNavigator}
+            options={{
+              header() {
+                return (
+                  <View
+                    style={{
+                      backgroundColor: '#0e4462',
+                      height: 70,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      paddingTop: 20,
+                    }}
+                  >
+                    <Text style={{ fontFamily: 'pacifico-regular', fontSize: 20, color: 'white' }}>Freshkeeper</Text>
+                  </View>
+                );
+              },
+            }}
+          />
+          <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+          <Stack.Group screenOptions={{ presentation: 'modal' }}>
+            <Stack.Screen name="Signup" component={ModalScreen} />
+            <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="Account" component={AccountScreen} />
+          </Stack.Group>
+        </>
+      ) : (
         <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Account" component={AccountScreen} />
-      </Stack.Group>
+      )}
     </Stack.Navigator>
   );
 }
