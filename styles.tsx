@@ -232,7 +232,6 @@ const styles = StyleSheet.create({
   },
   itemtextexpanded: {
     fontSize: 16,
-    color: 'rgb(73, 190, 255)',
     lineHeight: Dimensions.get('window').height * 0.03,
   },
   verticaldevider: {
@@ -263,9 +262,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: 10,
-  },
-  deleteButtonText: {
-    color: 'black',
   },
 
   // Recipe Tab

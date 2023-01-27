@@ -1,15 +1,19 @@
 import { useState, useCallback, useRef } from 'react';
-import { View, Text, TouchableOpacity, Alert, Pressable, Dimensions, Animated, Button } from 'react-native';
+import { TouchableOpacity, Alert, Pressable, Dimensions, Animated } from 'react-native';
 import styles from '../styles';
 import { DaysLeft, useDeleteItem } from '../hooks';
 import { ItemProps } from '../types';
 import useCheckUserStatus from '../hooks/useCheckUserStatus';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import Colors from '../constants/Colors';
+import useColorScheme from '../hooks/useColorScheme';
+import { Text, View } from './Themed';
 
 export const Item = ({ item }: ItemProps): JSX.Element => {
   const user = useCheckUserStatus();
   const [collapsed, setCollapsed] = useState(true);
   const expandAnimation = useRef(new Animated.Value(0)).current;
+  const colorScheme = useColorScheme();
 
   const toggleExpand = useCallback(
     (collapsed: boolean) => {
@@ -39,7 +43,7 @@ export const Item = ({ item }: ItemProps): JSX.Element => {
     <View style={styles.item}>
       <TouchableOpacity onPress={() => toggleExpand(collapsed)}>
         <View style={styles.itemheader}>
-          <Text style={collapsed ? styles.itemleftcollapsed : styles.itemleftexpanded}>{item.name}</Text>
+          <Text>{item.name}</Text>
           {collapsed && (
             <View style={styles.itemtextbanner}>
               <Text style={styles.itemtext}>
@@ -50,7 +54,11 @@ export const Item = ({ item }: ItemProps): JSX.Element => {
               <Text style={styles.verticaldevider}>|</Text>
             </View>
           )}
-          <MaterialCommunityIcons name={collapsed ? 'chevron-down' : 'chevron-up'} size={24} color="black" />
+          <MaterialCommunityIcons
+            name={collapsed ? 'chevron-down' : 'chevron-up'}
+            size={24}
+            color={styles.itemtext.color}
+          />
         </View>
         <Animated.View
           style={{
@@ -60,23 +68,27 @@ export const Item = ({ item }: ItemProps): JSX.Element => {
         >
           <View>
             <View style={styles.itemtextexpandedbanner}>
-              <Text style={styles.itemtextexpanded}>
+              <Text>
                 {item.amount} {item.amountType}
               </Text>
-              <Text style={styles.itemtextexpanded}>{DaysLeft(item.expiration)}</Text>
+              <Text>{DaysLeft(item.expiration)}</Text>
             </View>
             <View style={styles.itembuttons}>
               <Pressable style={styles.deleteButton} onPress={promptDelete}>
                 <MaterialCommunityIcons
                   name="delete-forever"
                   size={Dimensions.get('window').width * 0.1}
-                  color="black"
+                  color={Colors[colorScheme].text}
                 />
-                <Text style={styles.deleteButtonText}>Delete</Text>
+                <Text darkColor={Colors[colorScheme].text}>Delete</Text>
               </Pressable>
               <Pressable style={styles.deleteButton}>
-                <MaterialCommunityIcons name="pencil" size={Dimensions.get('window').width * 0.1} color="black" />
-                <Text style={styles.deleteButtonText}>Edit</Text>
+                <MaterialCommunityIcons
+                  name="pencil"
+                  size={Dimensions.get('window').width * 0.1}
+                  color={Colors[colorScheme].text}
+                />
+                <Text darkColor={Colors[colorScheme].text}>Edit</Text>
               </Pressable>
             </View>
           </View>

@@ -4,6 +4,9 @@ import { RootTabScreenProps } from '../types';
 import { ScrollView } from 'react-native';
 import useCheckUserStatus from '../hooks/useCheckUserStatus';
 import useGetItems from '../hooks/useGetItems';
+import Colors from '../constants/Colors';
+import useColorScheme from '../hooks/useColorScheme';
+
 /**
  * This is the second tab of the app. It shows the items of the user.
  *
@@ -13,6 +16,7 @@ export function TabTwoScreen({ navigation }: RootTabScreenProps<'TabTwo'>): JSX.
   const user = useCheckUserStatus();
   const { items, isLoading } = useGetItems();
   const storages = useStorages();
+  const colorScheme = useColorScheme();
 
   if (!user) {
     return <DirectToLogin navigation={navigation} />;
@@ -20,8 +24,10 @@ export function TabTwoScreen({ navigation }: RootTabScreenProps<'TabTwo'>): JSX.
 
   return (
     <ScrollView>
-      <View style={styles.storageContainer}>
-        <Text style={styles.tabsubtitle}>Items</Text>
+      <View style={styles.storageContainer} darkColor={Colors[colorScheme].background}>
+        <Text style={styles.tabsubtitle} darkColor={Colors[colorScheme].text}>
+          Items
+        </Text>
         {storages.map((storage) => (
           <View key={storage.name}>
             <Text
