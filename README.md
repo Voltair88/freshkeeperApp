@@ -12,9 +12,9 @@ An app that helps you keep track of you'r food items and notifies you when they 
 
 ## Screenshots
 
-![App Screenshot](https://imgur.com/DF8pGft)
-![App Screenshot](https://imgur.com/FJlu1uf)
-![App Screenshot](https://imgur.com/8KcRv27)
+![App Screenshot](https://i.imgur.com/DF8pGft.png)
+![App Screenshot](https://i.imgur.com/FJlu1uf.png)
+![App Screenshot](https://i.imgur.com/8KcRv27.png)
 
 ## Authors
 
