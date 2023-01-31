@@ -44,6 +44,7 @@
     "react-hook-form": "^7.40.0",
     "react-moment": "^1.1.2",
     "react-native": "0.70.5",
+    "react-native-get-random-values": "^1.8.0",
     "react-native-input-spinner": "^1.7.12",
     "react-native-paper": "^5.1.4",
     "react-native-reanimated": "~2.12.0",

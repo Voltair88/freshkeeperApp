@@ -7,6 +7,7 @@ import { Platform, ScrollView, TouchableOpacity } from 'react-native';
 import InputSpinner from 'react-native-input-spinner';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
+import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import moment from 'moment';
 import useCheckUserStatus from '../hooks/useCheckUserStatus';
@@ -251,6 +252,7 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>): JSX.
                       open(amountTypeRef);
                     }}
                   >
+                    <Text style={{ fontSize: 20, color: 'black' }}>{amountType ? '' : '...'}</Text>
                     <Picker
                       ref={amountTypeRef}
                       selectedValue={amountType}

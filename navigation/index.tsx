@@ -9,7 +9,7 @@ import useColorScheme from '../hooks/useColorScheme';
 import { AccountScreen } from '../screens/Account';
 import {
   TabThreeScreen,
-  ModalScreen,
+  SignupScreen,
   NotFoundScreen,
   TabOneScreen,
   TabTwoScreen,
@@ -56,7 +56,7 @@ function RootNavigator() {
       />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="Signup" component={ModalScreen} />
+        <Stack.Screen name="Signup" component={SignupScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Account" component={AccountScreen} />
       </Stack.Group>

@@ -44,16 +44,14 @@ export const Item = ({ item }: ItemProps): JSX.Element => {
       <TouchableOpacity onPress={() => toggleExpand(collapsed)}>
         <View style={styles.itemheader}>
           <Text>{item.name}</Text>
-          {collapsed && (
-            <View style={styles.itemtextbanner}>
-              <Text style={styles.itemtext}>
-                {item.amount} {item.amountType}
-              </Text>
-              <Text style={styles.verticaldevider}>|</Text>
-              <Text style={styles.itemtext}>{DaysLeft(item.expiration)}</Text>
-              <Text style={styles.verticaldevider}>|</Text>
-            </View>
-          )}
+          <View style={styles.itemtextbanner}>
+            <Text style={styles.itemtext}>
+              {item.amount} {item.amountType}
+            </Text>
+            <Text style={styles.verticaldevider}>|</Text>
+            <Text style={styles.itemtext}>{DaysLeft(item.expiration)}</Text>
+            <Text style={styles.verticaldevider}>|</Text>
+          </View>
           <MaterialCommunityIcons
             name={collapsed ? 'chevron-down' : 'chevron-up'}
             size={24}
@@ -67,12 +65,6 @@ export const Item = ({ item }: ItemProps): JSX.Element => {
           }}
         >
           <View>
-            <View style={styles.itemtextexpandedbanner}>
-              <Text>
-                {item.amount} {item.amountType}
-              </Text>
-              <Text>{DaysLeft(item.expiration)}</Text>
-            </View>
             <View style={styles.itembuttons}>
               <Pressable style={styles.deleteButton} onPress={promptDelete}>
                 <MaterialCommunityIcons

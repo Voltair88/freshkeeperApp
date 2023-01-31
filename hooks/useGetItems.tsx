@@ -6,7 +6,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import useCheckUserStatus from './useCheckUserStatus';
 import { item } from '../types';
 
-export default function useGetItems() {
+export default function useGetItems(): { items: item[]; isLoading: boolean } {
   const user = useCheckUserStatus();
   const [items, setItems] = useState<item[]>([]);
   const [isLoading, setIsLoading] = useState(true);

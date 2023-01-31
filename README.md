@@ -10,13 +10,11 @@ An app that helps you keep track of you'r food items and notifies you when they 
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 
-## Demo
-
-[FreshKeeper](https://freshkeeper.netlify.app)
-
 ## Screenshots
 
-![App Screenshot](https://i.imgur.com/GPvC9cA.png)
+![App Screenshot](https://imgur.com/DF8pGft)
+![App Screenshot](https://imgur.com/FJlu1uf)
+![App Screenshot](https://imgur.com/8KcRv27)
 
 ## Authors
 

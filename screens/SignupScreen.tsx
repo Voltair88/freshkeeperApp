@@ -7,7 +7,7 @@ import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/
 import styles from '../styles';
 import { RootTabScreenProps } from '../types';
 
-export function ModalScreen({ navigation }: RootTabScreenProps<'Signup'>): JSX.Element {
+export function SignupScreen({ navigation }: RootTabScreenProps<'Signup'>): JSX.Element {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [confirmPassword, setConfirmPassword] = React.useState('');
