@@ -1,6 +1,9 @@
 # Freshkeeper
 
-An app that helps you keep track of you'r food items and notifies you when they are near there expiration date.
+This is an app where you can enter an item such as Bread or Milk and its expiration date and the app will keep track of it. You can also search for recipes.
+
+There are alot of components and i dont think i will list all of them but lest start with app.tsx.
+first i have StatusBar and SafeAreaProvider 
 
 ## Badges
 

@@ -1,5 +1,5 @@
 import styles from '../styles';
-import { Text, View, TextInput } from '../components';
+import { Text, View, TextInput, DirectToLogin } from '../components';
 import { RootTabScreenProps, FormInputs, Inputs } from '../types';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { useRef, useState, useEffect } from 'react';
@@ -11,16 +11,13 @@ import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import moment from 'moment';
 import useCheckUserStatus from '../hooks/useCheckUserStatus';
-import { DirectToLogin } from '../components';
 import { useSendItem } from '../hooks/useSendItem';
 import { Snackbar } from 'react-native-paper';
 /**
  *  In this screen you can add a new item to your storage.
  *
  *  choose your products name, quantity, storage and expiration date.
- * TODO: Add a picture of the product
- * TODO: Add a barcode scanner
- * TODO: fix the date picker
+ *
  */
 export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>): JSX.Element {
   const user = useCheckUserStatus();
@@ -42,8 +39,6 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>): JSX.
 
   /**
    * Reset states to empty
-   * @returns void
-   *
    */
   const resetStates = () => {
     setName('');
@@ -70,8 +65,8 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>): JSX.
     amountTypeRef.current.focus();
   }
 
+  // Register form fields with React Hook Form
   useEffect(() => {
-    // Register form fields with React Hook Form
     register('name');
     register('amount');
     register('amountType');
@@ -100,6 +95,7 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>): JSX.
     }
   };
 
+  // shows date error message to user
   function showDateWarningText() {
     if (showDateWarning) {
       return <Text style={styles.error}>Enter an expiration date</Text>;
@@ -108,6 +104,7 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>): JSX.
     }
   }
 
+  // date picker function
   // eslint-disable-next-line no-unused-vars
   function datePicker(value: string, onChange: (...event: any[]) => void) {
     return (
@@ -128,6 +125,10 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>): JSX.
     );
   }
 
+  /**
+   * Returns the number of days left until an expiration date. Returns 0 if
+   * the expiration date is empty.
+   */
   function daysLeftSummary(expirationDate: string): number {
     if (expirationDate === '') {
       return 0;
@@ -139,6 +140,12 @@ export function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>): JSX.
     return days;
   }
 
+  /**
+   * Returns a text summary of the number of days left until the expiration date.
+   * If the expiration date is today, returns an empty string.
+   * If the expiration date is tomorrow, returns "Tomorrow".
+   * Otherwise, returns a string with the number of days left, e.g. "10 days left".
+   */
   function daysLeftText(expirationDate: string): string {
     const daysLeft = daysLeftSummary(expirationDate);
     if (daysLeft === 0) {

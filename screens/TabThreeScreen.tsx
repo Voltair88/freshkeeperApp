@@ -9,8 +9,6 @@ import { RootTabScreenProps } from '../types';
 
 /**
  * This is the third tab of the app. It shows some recipes and stuff.
- *
- *
  */
 
 export function TabThreeScreen({ navigation }: RootTabScreenProps<'TabThree'>): JSX.Element {
@@ -29,6 +27,13 @@ export function TabThreeScreen({ navigation }: RootTabScreenProps<'TabThree'>): 
     }, [])
   );
 
+  /**
+   * This code is a function that returns a list of recipes by using an API call to edamam.com.
+   * The function takes the input of a string and uses that string to query the API.
+   * The function uses the fetch() method to make an API call to the edamam.com API.
+   * The API returns a list of recipes that match the query and the function stores the list in a variable called recipes.
+   * The function also has a boolean variable called isLoading that is set to true while the API call is being made and false when the call is completed.
+   */
   const debouncedQuery = debounce(async (food: string) => {
     try {
       setIsLoading(true);

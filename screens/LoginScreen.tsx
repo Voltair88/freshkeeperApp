@@ -19,10 +19,8 @@ export function LoginScreen({ navigation }: RootTabScreenProps<'Login'>): JSX.El
       setValidationMessage('Login successful');
       navigation.navigate('TabOne');
     } catch (error: any) {
-      if (error.code === 'auth/user-not-found') {
-        setValidationMessage('No user found with that email');
-      } else if (error.code === 'auth/wrong-password') {
-        setValidationMessage('Incorrect password');
+      if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+        setValidationMessage('Invalid email or password');
       } else {
         setValidationMessage(error.message);
       }
